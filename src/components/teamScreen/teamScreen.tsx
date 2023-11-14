@@ -2,25 +2,33 @@ import React from 'react';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from './teamStyle';
+import { Entypo } from '@expo/vector-icons';
 
 type Team = {
   id: string;
   name: string;
   description: string;
+  members: Member[]; // Asumiendo que tienes un tipo Member definido en alguna parte
+};
+
+type Member = {
+  id: string;
+  username: string;
+  email: string;
 };
 
 const teams: Team[] = [
-  { id: '1', name: 'Equipo 1', description: 'descripción' },
+  { id: '1', name: 'Equipo 1', description: 'descripción', members: [] },
+  { id: '2', name: 'DESTRUCTOR DE QUESO', description: 'LOL', members: [] },
   // ... otros equipos
 ];
 
 const TeamScreen: React.FC = () => {
-  const navigation = useNavigation(); // Esto debe estar dentro del componente.
+  const navigation = useNavigation();
 
-  const navigateToAddNewTeam = () => {
-    // Implementa la navegación a la pantalla para agregar un nuevo equipo
-    // Asegúrate de que la pantalla para agregar un nuevo equipo esté registrada en tu Stack Navigator
-    navigation.navigate('addTeam');
+
+  const handleDescriptionPress = (team: Team) => {
+    navigation.navigate('TeamDescription', { team });
   };
 
   return (
@@ -29,17 +37,19 @@ const TeamScreen: React.FC = () => {
         data={teams}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.teamItem}
-          >
+          <View style={styles.teamItem}>
             <Text style={styles.teamName}>{item.name}</Text>
-            <Text>{item.description}</Text>
-          </TouchableOpacity>
+            <View style={styles.iconsContainer}>
+              <TouchableOpacity onPress={() => handleDescriptionPress(item)}>
+                <Entypo name="documents" size={24} color="black" style={styles.icon} />
+              </TouchableOpacity>
+            </View>
+          </View>
         )}
       />
       <TouchableOpacity
         style={styles.addButton}
-        onPress={navigateToAddNewTeam}
+        onPress={() => navigation.navigate('addTeam')} // Asegúrate de que 'AddTeam' es el nombre correcto de la ruta
       >
         <Text style={styles.addButtonText}>+</Text>
       </TouchableOpacity>

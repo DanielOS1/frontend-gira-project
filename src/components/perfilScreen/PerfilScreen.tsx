@@ -30,7 +30,7 @@ const Perfil = () => {
         const token = await getToken();
         const requestBody = fieldToUpdate === "username" ? { username } : { email };
 
-        const response = await fetch('http://192.168.0.6:3000/profile/update', {
+        const response = await fetch('http://192.168.0.7:3000/profile/update', {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ const Perfil = () => {
           try {
               const token = await getToken();  // Obtener el token
               console.log(token)
-              const response = await fetch('http://192.168.0.6:3000/profile/me', {
+              const response = await fetch('http://192.168.0.7:3000/profile/me', {
                   headers: {
                       'Authorization': `Bearer ${token}`,  // Enviar el token en el header
                   },
@@ -101,25 +101,6 @@ const Perfil = () => {
       setIsEditing({ ...isEditing, [field]: false });
     }
   };
-
-  type Team = {
-    id: string;
-    name: string;
-    description: string;
-  };
-  
-  const teams: Team[] = [
-    { id: '1', name: 'Equipo 1', description: 'descripción' },
-    // ... otros equipos
-  ];
-
-    const navigateToTeamDetails = (teamId: string) => {
-      // Navegar a los detalles del equipo
-    };
-  
-    const navigateToAddNewTeam = () => {
-      // Navegar para agregar un nuevo equipo
-    };
   
 
   return (
@@ -164,19 +145,6 @@ const Perfil = () => {
         </TouchableOpacity>
       </View>
       {isEditing.email && <Button title="Guardar" onPress={() => handleSave("email")} />}
-      <FlatList
-            data={teams}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-            <TouchableOpacity
-                
-                onPress={() => navigateToTeamDetails(item.id)}
-            >
-                
-                <Text>{item.description}</Text>
-            </TouchableOpacity>
-            )}
-        />
     </View>
   );
 };

@@ -4,7 +4,9 @@ import LoginScreen from '../components/loginScreen/LoginScreen';
 import RegisterScreen from '../components/registerScreen/RegisterScreen';
 import HomeScreen from '../components/homeScreen'; // Importa la pantalla HomeScree
 import Perfil from '../components/perfilScreen/PerfilScreen';
-import CreateTeamScreen from '../components/teamScreen/Components/addTeamScreen/addTeamScreen';
+import CreateTeamScreen from '../components/teamScreen/Components/addTeamScreen';
+import AddUserScreen from '../components/teamScreen/Components/addTeamScreen/addUserToTeamScreen';
+import TeamDescription from '../components/teamScreen/Components/TeamDescription/TeamDescriptionScreen';
 const Navigator = () => {
     const Stack = createNativeStackNavigator();
 
@@ -16,9 +18,11 @@ const Navigator = () => {
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Perfil" component={Perfil} />
             <Stack.Screen name="addTeam" component={CreateTeamScreen} />
+            <Stack.Screen name="AddUserScreen" component={AddUserScreen} />
+            <Stack.Screen name="TeamDescription" component={TeamDescription} />
             </Stack.Navigator>
         </NavigationContainer>
     );
 }
-
+ 
 export default Navigator;

@@ -1,48 +1,47 @@
-// teamDescriptionStyle.js
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
-const styles = StyleSheet.create({
+export default StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    alignItems: "center",
-    justifyContent: "flex-start",
-  },
-  teamImage: {
-    width: 150,
-    height: 150,
-    borderRadius: 75, // Esto hará que la imagen sea circular
-    borderWidth: 1,
-    borderColor: "#000",
-    marginBottom: 20,
+    backgroundColor: '#f4f4f4', // Un fondo claro
   },
   teamName: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
+    color: '#333', // Texto oscuro para el nombre del equipo
     marginBottom: 10,
   },
   teamDescription: {
     fontSize: 16,
+    color: '#666', // Texto más suave para la descripción
     marginBottom: 20,
   },
   addButton: {
-    backgroundColor: "blue",
+    backgroundColor: '#007bff', // Un color azul estándar para el botón
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  deleteButton: {
+    backgroundColor: '#dc3545', // Rojo para el botón de eliminar
     padding: 10,
     borderRadius: 5,
     marginBottom: 20,
   },
   addButtonText: {
-    color: "#fff",
+    color: 'white',
+    textAlign: 'center',
     fontSize: 16,
   },
   memberItem: {
-    padding: 10,
+    backgroundColor: 'white',
+    padding: 15,
     borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
+    borderBottomColor: '#ddd',
   },
   memberName: {
-    fontSize: 16,
+    fontSize: 18,
+    color: '#333',
   },
 });
-
-export default styles;

@@ -24,8 +24,7 @@ const LoginScreen: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         const token = data.token;
-      
-        // Guarda el token en AsyncStorage
+        console.log(token);
         await AsyncStorage.setItem('token', token);
       
         // Muestra un mensaje de inicio de sesión exitoso

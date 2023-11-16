@@ -4,9 +4,12 @@ import LoginScreen from '../components/loginScreen/LoginScreen';
 import RegisterScreen from '../components/registerScreen/RegisterScreen';
 import HomeScreen from '../components/homeScreen'; // Importa la pantalla HomeScree
 import Perfil from '../components/perfilScreen/PerfilScreen';
-import CreateTeamScreen from '../components/teamScreen/Components/addTeamScreen';
-import AddUserScreen from '../components/teamScreen/Components/addTeamScreen/addUserToTeamScreen';
+import CreateTeamScreen from '../components/teamScreen/Components/addTeamScreen/addTeamScreen';
+import AddUserScreen from '../components/teamScreen/Components/addUserToTeam/addUserToTeamScreen';
 import TeamDescription from '../components/teamScreen/Components/TeamDescription/TeamDescriptionScreen';
+import ProjectCreationScreen from '../components/projectScreen/projectCreate/projectCreateScreen';
+import ProjectDescriptionScreen from '../components/projectScreen/projectDescription/projectDescriptionScreen';
+import TeamScreen from '../components/teamScreen/teamScreen';
 const Navigator = () => {
     const Stack = createNativeStackNavigator();
 
@@ -19,7 +22,10 @@ const Navigator = () => {
             <Stack.Screen name="Perfil" component={Perfil} />
             <Stack.Screen name="addTeam" component={CreateTeamScreen} />
             <Stack.Screen name="AddUserScreen" component={AddUserScreen} />
+            <Stack.Screen name="projectCreation" component={ProjectCreationScreen} />
             <Stack.Screen name="TeamDescription" component={TeamDescription} />
+            <Stack.Screen name="ProjectDescription" component={ProjectDescriptionScreen} />
+            <Stack.Screen name="TeamScreen" component={TeamScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     );

@@ -4,8 +4,15 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
     padding: 20,
+    backgroundColor: "#f5f5f5",
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 20,
+    textAlign: 'center',
   },
   circleShape: {
     width: 120,
@@ -15,15 +22,15 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   input: {
-    height: 40,
-    width: "100%",
-    marginVertical: 8,
     borderWidth: 1,
-    borderColor: "#000",
+    borderColor: "#ddd",
     padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+    backgroundColor: "white",
   },
   descriptionInput: {
-    height: 100,
+    height: 100, // Mayor altura para la descripción
     textAlignVertical: "top",
   },
   userSection: {
@@ -47,16 +54,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   button: {
-    backgroundColor: "#000",
-    padding: 10,
-    marginTop: 20,
-    width: '100%', // Asegúrate de que el botón se extiende todo el ancho posible
-    alignItems: 'center',
+    backgroundColor: "#007bff",
+    padding: 15,
     borderRadius: 5,
+    alignItems: "center",
   },
   buttonText: {
-    color: "#fff",
-    fontSize: 16,
+    color: "white",
+    fontWeight: "bold",
   },
   collaboratorText: {
     fontSize: 16,

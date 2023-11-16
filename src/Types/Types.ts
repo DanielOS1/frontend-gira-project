@@ -12,9 +12,9 @@ export type User = {
   };
   
   export type Team = {
-    id: string;
-    name: string;
-    description: string;
-    members: User[];
+    id: number;
+    nombre: string;
+    descripcion: string;
+    users: User[];
   };
   

@@ -2,9 +2,10 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AntDesign } from '@expo/vector-icons'; 
-import Perfil from './perfilScreen/PerfilScreen'; 
-import TeamScreen from './teamScreen/teamScreen';
-import ProjectScreen from './projectScreen/projectScreen';
+
+import Perfil from '../Auth/perfilScreen/PerfilScreen'; 
+import TeamScreen from '../Project/teamScreen/teamScreen';
+import ProjectScreen from '../Project/projectScreen/projectScreen';
 
 const Tab = createBottomTabNavigator();
 

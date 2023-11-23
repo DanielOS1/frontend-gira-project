@@ -5,7 +5,7 @@ import axios from 'axios';
 import styles from './teamStyle';
 import { Entypo } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { API_URL} from '@env';
 type Team = {
   id: string;
   nombre: string;
@@ -38,7 +38,7 @@ const TeamScreen: React.FC = () => {
           return;
         }
 
-        const response = await axios.get('http://192.168.0.7:3000/equipos/user-equipos', {
+        const response = await axios.get(`http://${API_URL}/equipos/user-equipos`, {
           headers: {
             Authorization: `Bearer ${token}` // Incluir el token en los encabezados
           }

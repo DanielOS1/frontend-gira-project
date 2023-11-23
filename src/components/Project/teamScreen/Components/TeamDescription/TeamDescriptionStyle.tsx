@@ -12,6 +12,12 @@ export default StyleSheet.create({
     color: '#333', // Texto oscuro para el nombre del equipo
     marginBottom: 10,
   },
+  newProjectButton: {
+    backgroundColor: '#28a745', // Un tono de verde
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 20,
+  },
   teamDescription: {
     fontSize: 16,
     color: '#666', // Texto más suave para la descripción

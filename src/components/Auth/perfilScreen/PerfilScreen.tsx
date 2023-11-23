@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Entypo } from '@expo/vector-icons';
+import { API_URL} from '@env';
 import styles from './perfilStyle'; // Asegúrate de que la ruta al archivo de estilos sea correcta
 
 const ProfileImagePlaceholder = () => (
@@ -30,7 +31,7 @@ const Perfil = () => {
         const token = await getToken();
         const requestBody = fieldToUpdate === "username" ? { username } : { email };
 
-        const response = await fetch('http://192.168.0.7:3000/profile/update', {
+        const response = await fetch(`${API_URL}/profile/update`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',

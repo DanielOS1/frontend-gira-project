@@ -4,8 +4,10 @@ import { View, Text, StyleSheet, Animated, TouchableOpacity, ImageBackground  } 
 import { TextInput, Button } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BlurView } from 'expo-blur';
+import { API_URL} from '@env';
 import styles from './loginStyles';
 const LoginScreen: React.FC = () => {
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
@@ -13,7 +15,8 @@ const LoginScreen: React.FC = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://192.168.0.7:3000/auth/login', {
+      console.log(API_URL)
+      const response = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

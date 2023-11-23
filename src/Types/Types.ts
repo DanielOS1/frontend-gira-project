@@ -2,6 +2,12 @@ export type RootStackParamList = {
     TeamDescription: {
         team: Team;
     };
+    ProjectHome: {
+      params: {
+        projectId: string;
+        projectName: string;
+      };
+    }
 };
 
 
@@ -18,3 +24,8 @@ export type User = {
     users: User[];
   };
   
+
+  export type Task = {
+    id: string;
+    title: string;
+  };

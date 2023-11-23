@@ -4,7 +4,7 @@ import styles from "./addTeamStyle";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios"; // Asegúrate de tener axios instalado
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { API_URL} from '@env';
 const CreateTeamScreen: React.FC = () => {
   const [teamName, setTeamName] = useState("");
   const [description, setDescription] = useState("");
@@ -28,7 +28,7 @@ const CreateTeamScreen: React.FC = () => {
       }
   
       // Obtén los detalles del usuario, incluyendo el nombre de usuario, del backend
-      const userDataResponse = await axios.get("http://192.168.0.7:3000/profile/me", {
+      const userDataResponse = await axios.get(`http://${API_URL}/profile/me`, {
         headers: {
           Authorization: `Bearer ${token}`, // Enviar el token en el header
         },
@@ -42,7 +42,7 @@ const CreateTeamScreen: React.FC = () => {
   
       // Crear el equipo
       const createTeamResponse = await axios.post(
-        "http://192.168.0.7:3000/equipos/register",
+        `http://${API_URL}/equipos/register`,
         {
           nombre: teamName,
           descripcion: description,
@@ -57,7 +57,7 @@ const CreateTeamScreen: React.FC = () => {
        // Asegúrate de obtener el ID correcto del equipo
   
         // Agregar el usuario al equipo recién creado utilizando el username
-        await axios.post(`http://192.168.0.7:3000/equipos/${teamName}/users/${username}`, {}, {
+        await axios.post(`http://${API_URL}/equipos/${teamName}/users/${username}`, {}, {
           headers: { Authorization: `Bearer ${token}` },
         });
   

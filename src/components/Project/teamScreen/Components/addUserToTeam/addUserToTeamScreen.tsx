@@ -4,7 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'reac
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from "@react-navigation/native";
-
+import { API_URL} from '@env';
 const AddUserScreen: React.FC<{ route: any}> = ({ route }) => {
   const [userName, setUserName] = useState('');
   const { nombre } = route.params;
@@ -19,7 +19,7 @@ const AddUserScreen: React.FC<{ route: any}> = ({ route }) => {
       console.log(nombre);
       console.log(userName);
       // Actualizar la URL para incluir el nombre del equipo y el nombre de usuario
-      const response = await axios.post(`http://192.168.0.7:3000/equipos/${nombre}/users/${userName}`, {}, {
+      const response = await axios.post(`http://${API_URL}/equipos/${nombre}/users/${userName}`, {}, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

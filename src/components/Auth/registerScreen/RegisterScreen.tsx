@@ -5,6 +5,7 @@ import { TextInput, Button } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BlurView } from 'expo-blur';
 import styles from './registerStyles';
+import { API_URL} from '@env';
 
 const RegisterScreen: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -15,7 +16,8 @@ const RegisterScreen: React.FC = () => {
 
   const handleRegister = async () => {
     try {
-      const response = await fetch('http://192.168.0.7:3000/auth/register', {
+      console.log(API_URL)
+      const response = await fetch(`http://${API_URL}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

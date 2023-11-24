@@ -20,3 +20,12 @@ export const getData = async (key: string) => {
     console.error(`Failed to fetch the data with key ${key} from the storage`, e);
   }
 };
+
+
+export const getToken = async () => {
+  try {
+    return await AsyncStorage.getItem('token');
+} catch (error) {
+    console.error('Error al obtener el token:', error);
+}
+};

@@ -20,6 +20,8 @@ export interface TasksState {
   done: Task[];
 }
 
+
+
 const initialTasks: TasksState = {
   toDo: [{ id: 'IDS-24', title: 'Base de datos terminada',description: 'tarea 1',creationDate: "a",endDate: "a",creator: "a",responsible: "a" }, { id: 'IDS-25', title: 'Diseño de la interfaz',description: 'tarea 2',creationDate: "a",endDate: "a",creator: "a",responsible: "a" }, { id: 'IDS-26', title: 'Reunión con el cliente',description: 'tarea 3',creationDate: "a",endDate: "a",creator: "a",responsible: "a" }, { id: 'IDS-27', title: 'Reunión con el equipo',description: 'tarea 4',creationDate: "a",endDate: "a",creator: "a",responsible: "a" }],
   inProgress: [],
@@ -43,6 +45,13 @@ export const useTaskLogic = () => {
         [to]: newToTasks,
       };
     });
+  };
+
+  const addNewTask = (newTaskData : Task) => {
+    setTasks(prev => ({
+      ...prev,
+      toDo: [...prev.toDo, newTaskData], // Añade la nueva tarea al final del array 'toDo'
+    }));
   };
 
   const selectTask = async (task: Task) => {
@@ -70,5 +79,6 @@ export const useTaskLogic = () => {
     navigateToTaskDetails,
     navigateToCreateTask,
     selectTask,
+    addNewTask,
   };
 };

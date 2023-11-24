@@ -56,7 +56,7 @@ const TaskScreen: React.FC = () => {
       </View>
     );
   };
-
+  console.log(tasks);
   return (
     <ScrollView style={styles.container}>
       <TouchableOpacity onPress={navigateToCreateTask} style={styles.createTaskButton}>

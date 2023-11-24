@@ -3,7 +3,6 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';// Asegúrate de que la ruta de importación sea correcta
 import { AntDesign } from '@expo/vector-icons'; 
 import TaskScreen from '../projectTask/TaskScreen';
-import DescriptionScreen from '../projectDescription/projectDescription';
 import SettingsScreen from '../projectSettings/SettingsScreen';
 
 const ProjectTabNavigator = createBottomTabNavigator();
@@ -19,8 +18,6 @@ const HomeProjectScreen: React.FC = () => {
               iconName = 'setting';
             } else if (route.name === 'Task') {
               iconName = 'book';
-            } else if (route.name === 'Description') {
-              iconName = 'switcher';
             }
             return <AntDesign name={iconName} size={size} color={color} />;
           },
@@ -31,7 +28,6 @@ const HomeProjectScreen: React.FC = () => {
         }}
       >
         <ProjectTabNavigator.Screen name="Task" component={TaskScreen} />
-        <ProjectTabNavigator.Screen name="Description" component={DescriptionScreen} />
         <ProjectTabNavigator.Screen name="Settings" component={SettingsScreen} />
       </ProjectTabNavigator.Navigator>
     );

@@ -1,87 +1,140 @@
 // ProjectScreen.tsx
-import React, { useState, useEffect } from "react";
-import { useNavigation } from '@react-navigation/native';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from "react-native";
-import { storeData } from '../../../logic/storage'; 
+import React, { useState, useCallback } from 'react';
+import { View, Text, TouchableOpacity, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
+import axios from 'axios';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_URL } from '@env';
+import { storeData } from '../../../logic/storage';
 
-interface Project {
+type Project = {
   id: string;
-  name: string;
-}
+  nombre: string;
+  // Añade aquí más propiedades si son necesarias
+};
+
+type Team = {
+  id: string;
+  nombre: string;
+  descripcion: string;
+  proyectos: Project[];
+};
 
 const ProjectScreen: React.FC = () => {
-  const navigation = useNavigation<any>();
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [teams, setTeams] = useState<Team[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const navigation = useNavigation();
 
-  useEffect(() => {
-    const sampleProjects: Project[] = [
-      { id: "1", name: "Proyecto 1" },
-      { id: "2", name: "Proyecto 2" },
-    ];
-    setProjects(sampleProjects);
+  const fetchTeamsAndProjects = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (!token) {
+        console.error('No se encontró el token de autenticación');
+        setIsLoading(false);
+        return;
+      }
+
+      let teamsResponse = await axios.get(`http://${API_URL}/equipos/user-equipos`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      const proyectosPromises = teamsResponse.data.equipos.map(async (equipo: Team) => {
+        const proyectosResponse = await axios.get(`http://${API_URL}/equipos/${equipo.id}/proyectos`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        return { ...equipo, proyectos: proyectosResponse.data };
+      });
+
+      const teamsWithProyectos = await Promise.all(proyectosPromises);
+      setTeams(teamsWithProyectos);
+    } catch (error) {
+      console.error('Error al cargar los equipos y proyectos', error);
+    }
+    setIsLoading(false);
   }, []);
 
+  useFocusEffect(
+    useCallback(() => {
+      fetchTeamsAndProjects();
+    }, [fetchTeamsAndProjects])
+  );
+
   const handleProjectPress = async (project: Project) => {
-    await storeData('projectName', project.name);
-    navigation.navigate("ProjectHome");
+    console.log('Proyecto seleccionado:', project);
+    await storeData('selectedProjectId', project.id)
+    navigation.navigate('ProjectHome', { project });
   };
+
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
 
   const renderProjectItem = ({ item }: { item: Project }) => (
     <TouchableOpacity style={styles.projectItem} onPress={() => handleProjectPress(item)}>
-      <Text>{item.name}</Text>
+      <Text style={styles.projectName}>{item.nombre}</Text>
     </TouchableOpacity>
   );
 
-  const handleProjectAdd = () => {
-    navigation.navigate("projectCreation");
-  };
+  const renderTeamItem = ({ item }: { item: Team }) => (
+    <View style={styles.teamContainer}>
+      <Text style={styles.teamName}>{item.nombre}</Text>
+      <FlatList
+        data={item.proyectos}
+        keyExtractor={(project) => project.id}
+        renderItem={renderProjectItem}
+      />
+    </View>
+  );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Proyectos</Text>
       <FlatList
-        data={projects}
-        keyExtractor={(item) => item.id}
-        renderItem={renderProjectItem}
+        data={teams}
+        keyExtractor={(team) => team.id}
+        renderItem={renderTeamItem}
       />
-      <TouchableOpacity style={styles.addButton} onPress={handleProjectAdd}>
-        <Text style={styles.buttonText}>+</Text>
-      </TouchableOpacity>
     </View>
   );
 };
 
+// Estilos para el ProjectScreen
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 20,
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: "bold",
-        marginBottom: 20,
-    },
-    projectItem: {
-        backgroundColor: "#eee",
-        padding: 15,
-        marginBottom: 10,
-        borderRadius: 5,
-    },
-    addButton: {
-        position: "absolute",
-        bottom: 20,
-        right: 20,
-        backgroundColor: "blue",
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    buttonText: {
-        color: "white",
-        fontSize: 24,
-    }
+  container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: '#f3f3f3',
+  },
+  teamContainer: {
+    marginBottom: 20,
+    padding: 10,
+    backgroundColor: '#fff',
+    borderRadius: 6,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 3,
+  },
+  teamName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  projectItem: {
+    backgroundColor: '#e9ecef',
+    padding: 8,
+    marginVertical: 4,
+    borderRadius: 4,
+  },
+  projectName: {
+    fontSize: 16,
+    color: '#333',
+  },
 });
 
 export default ProjectScreen;

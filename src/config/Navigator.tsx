@@ -12,6 +12,7 @@ import HomeProjectScreen from '../components/Project/projectScreen/projectHome/p
 import TeamScreen from '../components/Project/teamScreen/teamScreen';
 import CreateTaskScreen from '../components/Project/projectScreen/projectTask/taskManager/CreateTaskScreen';
 import TaskDetailsScreen from '../components/Project/projectScreen/projectTask/taskManager/TaskDetailsScreen';
+import ProjectScreen from '../components/Project/projectScreen/projectScreen';
 const Navigator = () => {
     const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,7 @@ const Navigator = () => {
             <Stack.Screen name="CreateTaskScreen" component={CreateTaskScreen} />
             <Stack.Screen name="TaskDetailsScreen" component={TaskDetailsScreen} />
             <Stack.Screen name="TeamScreen" component={TeamScreen} />
+            <Stack.Screen name="ProjectScreen" component={ProjectScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     );

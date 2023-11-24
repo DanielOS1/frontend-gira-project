@@ -1,18 +1,37 @@
 // CreateTaskScreen.tsx
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { useTaskLogic } from '../useTaskLogic';
+import { useNavigation } from '@react-navigation/native';
 
 const CreateTaskScreen = () => {
+  const { addNewTask } = useTaskLogic();
   const [taskName, setTaskName] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
   const [taskResponsible, setTaskResponsible] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-
+  const navigator = useNavigation();
   const handleCreateTask = () => {
-    // Lógica para crear la tarea
-    console.log('Crear tarea:', taskName, taskDescription, taskResponsible, startDate, endDate);
-    // Aquí deberías llamar a tu API para crear la tarea
+    // Crear un objeto de tarea con información relevante
+    const newTask = {
+      id: `ID-${Math.random().toString(36).substr(2, 9)}`, // Generar un ID único
+      title: taskName,
+      description: taskDescription,
+      creationDate: startDate,
+      endDate: endDate,
+      creator: 'Nombre del Creador', // Reemplazar con información pertinente
+      responsible: taskResponsible,
+    };
+    addNewTask(newTask); // Añadir la nueva tarea usando la función del hook
+    // Navegar de vuelta al tablero de tareas o manejar la navegación como sea pertinente
+    setTaskName('');
+    setTaskDescription('');
+    setTaskResponsible('');
+    setStartDate('');
+    setEndDate('');
+    navigator.goBack();
+
   };
 
   return (

@@ -6,7 +6,8 @@ import { getData, storeData} from '../../../../logic/storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface Team {
-    name: string;
+    id: string;
+    nombre: string;
 }
 
 interface Project {
@@ -17,13 +18,34 @@ interface Project {
   }
 
 export const useCreateLogic = () => {
-    const [team, setTeam] = useState<Team>({ name: '' });
-    const [selectedTeam, setSelectedTeam] = useState<string | undefined>(undefined);
+    const [teams, setTeams] = useState<Team[]>([]);
+    const [selectedTeams, setSelectedTeams] = useState<Array<string>>([]);
     const [descripcion, setDescripcion] = useState('');
     const navigation = useNavigation();
-    const [projects, setProjects] = useState<Project[]>([]);
+
+    const [project, setProject] = useState<Project>({ id: '', name: '', descripcion: '' });
+    const [nameProject, setNameProject] = useState('');
+
+
     const loadUserTeams = async () => {
-        // Lógica para cargar los equipos desde el backend
+        // Cargar los equipos del usuario desde el backend y actualizar el estado `teams`
+        // Asegúrate de actualizar la URL y manejar la autenticación si es necesario
+        console.log('Cargando equipos del usuario...');
+        try {
+            const token = await AsyncStorage.getItem('token');
+            if (token) {
+                const response = await axios.get(`http://${API_URL}/equipos/user-equipos`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setTeams(response.data.equipos); // Suponiendo que la respuesta es un array de equipos
+                console.log('Equipos cargados', response.data);
+                console.log(teams)
+            } else {
+                throw new Error('Authentication token not found'); 
+            }
+        } catch (error) {
+            console.error('Error al cargar los equipos', error);
+        }
     };
 
     const handleCreateProject = async () => {
@@ -32,17 +54,21 @@ export const useCreateLogic = () => {
             if (token === null) {
                 throw new Error('Authentication token not found');
             }
-            const createProjectResponse = await axios.post(`http://${API_URL}/project`, {
-                teamName: selectedTeam,
-                description: descripcion,
+
+            // En el cuerpo de la solicitud, cambia `teamName` a un campo que contenga los IDs de los equipos seleccionados.
+            const createProjectResponse = await axios.post(`http://${API_URL}/proyecto/create`, {
+                equipoIds: selectedTeams, // Cambiado para enviar un array de IDs de equipo
+                nombre: nameProject, // Asegúrate de que `team` tenga un campo `name`
+                descripcion: descripcion,
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-            setProjects(prevProjects => [...prevProjects, createProjectResponse.data]);
-            navigation.navigate('ProjectList');
-        } catch (error) { 
+
+            // Si la respuesta es exitosa, puedes navegar al listado de proyectos o manejar la respuesta como necesites
+            navigation.navigate('Home');
+        } catch (error) {
             console.error('Error al crear el proyecto', error);
         }
     };
@@ -51,5 +77,5 @@ export const useCreateLogic = () => {
         loadUserTeams();
     }, []);
 
-    return { team, setTeam, selectedTeam, setSelectedTeam, descripcion, setDescripcion, handleCreateProject };
+    return { teams, setTeams, selectedTeams, setSelectedTeams, descripcion, setDescripcion, handleCreateProject,project,setProject,nameProject,setNameProject };
 };

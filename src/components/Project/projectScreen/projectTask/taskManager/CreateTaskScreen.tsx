@@ -1,8 +1,10 @@
 // CreateTaskScreen.tsx
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { useTaskLogic } from '../useTaskLogic';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+import { getData, getToken } from '../../../../../logic/storage';
 
 const CreateTaskScreen = () => {
   const { addNewTask } = useTaskLogic();
@@ -11,27 +13,43 @@ const CreateTaskScreen = () => {
   const [taskResponsible, setTaskResponsible] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const navigator = useNavigation();
-  const handleCreateTask = () => {
-    // Crear un objeto de tarea con información relevante
-    const newTask = {
-      id: `ID-${Math.random().toString(36).substr(2, 9)}`, // Generar un ID único
-      title: taskName,
-      description: taskDescription,
-      creationDate: startDate,
-      endDate: endDate,
-      creator: 'Nombre del Creador', // Reemplazar con información pertinente
-      responsible: taskResponsible,
-    };
-    addNewTask(newTask); // Añadir la nueva tarea usando la función del hook
-    // Navegar de vuelta al tablero de tareas o manejar la navegación como sea pertinente
-    setTaskName('');
-    setTaskDescription('');
-    setTaskResponsible('');
-    setStartDate('');
-    setEndDate('');
-    navigator.goBack();
+  const navigation = useNavigation();
 
+  
+  const handleCreateTask = async () => {
+    try {
+      const token = await getToken(); // Obtiene el token de autenticación
+      const projectId = await getData('selectedProjectId');
+      console.log('projectId', projectId);
+      if (!projectId) {
+        Alert.alert('Error', 'No se ha seleccionado un proyecto.');
+        return;
+      }
+
+      const newTask = {
+        nombre: taskName,
+        descripcion: taskDescription,
+        proyectoId: projectId, // Usamos el ID del proyecto obtenido del almacenamiento
+        responsableId: taskResponsible ? 'id_del_responsable' : null, // Opcional, maneja según tu lógica
+        fechaInicio: startDate,
+        fechaTermino: endDate,
+        estado: 'pendiente', // Estado inicial de la tarea
+      };
+
+      const response = await axios.post('http://192.168.0.7:3000/tareas/create', newTask, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      
+      if (response.status === 200 || response.status === 201) {
+        Alert.alert('Éxito', 'Tarea creada correctamente');
+        navigation.goBack();
+      } else {
+        Alert.alert('Error', 'No se pudo crear la tarea');
+      }
+    } catch (error) {
+      console.error('Error al crear la tarea', error);
+      Alert.alert('Error', 'No se pudo crear la tarea');
+    }
   };
 
   return (

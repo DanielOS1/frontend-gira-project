@@ -1,18 +1,13 @@
 // useTaskLogic.ts
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { storeData } from '../../../../logic/storage';
+import { getData, getToken, storeData } from '../../../../logic/storage';
+import axios from 'axios';
+import { Task } from '../../../../Types/Types';
+import { Alert } from 'react-native';
 
-export interface Task {
-    id: string;
-    title: string;
-    description: string;
-    creationDate: string;
-    endDate: string;
-    creator: string;
-    responsible: string;
-  }
+
 
 export interface TasksState {
   toDo: Task[];
@@ -21,16 +16,72 @@ export interface TasksState {
 }
 
 
+export const useTaskLogic = () => {
+  const [tasks, setTasks] = useState<TasksState>({
+    toDo: [],
+    inProgress: [],
+    done: [],
+  });
+  const navigation = useNavigation();
 
-const initialTasks: TasksState = {
-  toDo: [{ id: 'IDS-24', title: 'Base de datos terminada',description: 'tarea 1',creationDate: "a",endDate: "a",creator: "a",responsible: "a" }, { id: 'IDS-25', title: 'Diseño de la interfaz',description: 'tarea 2',creationDate: "a",endDate: "a",creator: "a",responsible: "a" }, { id: 'IDS-26', title: 'Reunión con el cliente',description: 'tarea 3',creationDate: "a",endDate: "a",creator: "a",responsible: "a" }, { id: 'IDS-27', title: 'Reunión con el equipo',description: 'tarea 4',creationDate: "a",endDate: "a",creator: "a",responsible: "a" }],
-  inProgress: [],
-  done: [],
+  const fetchTasks = async () => {
+    try {
+        const storedTeam = await getData('selectedProjectId');
+        const projectId = storedTeam;
+        const response = await axios.get(`http://192.168.0.7:3000/proyecto/${projectId}/tareas`);
+        const fetchedTasks: Task[] = response.data;
+        
+        // Aquí debes separar las tareas en sus respectivas categorías según su estado
+        const toDoTasks = fetchedTasks.filter(task => task.estado === 'toDo');
+        const inProgressTasks = fetchedTasks.filter(task => task.estado === 'inProgress');
+        const doneTasks = fetchedTasks.filter(task => task.estado === 'done');
+
+        setTasks({
+            toDo: toDoTasks,
+            inProgress: inProgressTasks,
+            done: doneTasks,
+        });
+    } catch (error) {
+        console.error('Error al obtener las tareas', error);
+    }
 };
 
-export const useTaskLogic = () => {
-  const [tasks, setTasks] = useState<TasksState>(initialTasks);
-  const navigation = useNavigation();
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  const updateTaskStatuses = async () => {
+    // Obtener el token de autenticación
+    const token = await getToken();
+
+    // Preparar los datos de las tareas actualizadas para enviar al backend
+    const updatedTasksStatuses = [
+      ...tasks.toDo.map(task => ({ id: task.id, estado: 'toDo' })),
+      ...tasks.inProgress.map(task => ({ id: task.id, estado: 'inProgress' })),
+      ...tasks.done.map(task => ({ id: task.id, estado: 'done' })),
+    ];
+    console.log('updatedTasksStatuses', updatedTasksStatuses);
+    try {
+      // Enviar todos los estados actualizados al backend
+      const response = await axios.put(
+        'http://192.168.0.7:3000/tareas/updateStatuses',
+        { updatedTasks: updatedTasksStatuses },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      // Verificar la respuesta del backend y mostrar un mensaje apropiado
+      if (response.status === 200) {
+        Alert.alert('Éxito', 'Los estados de las tareas se han actualizado.');
+        fetchTasks(); // Recargar las tareas actualizadas del servidor
+      } else {
+        Alert.alert('Error', 'No se pudieron actualizar los estados de las tareas.');
+      }
+    } catch (error) {
+      console.error('Error al actualizar los estados de las tareas', error);
+      Alert.alert('Error', 'Ha ocurrido un error al actualizar los estados de las tareas.');
+    }
+  };
 
   const moveTask = (taskId: string, from: keyof TasksState, to: keyof TasksState) => {
     setTasks(prev => {
@@ -80,5 +131,7 @@ export const useTaskLogic = () => {
     navigateToCreateTask,
     selectTask,
     addNewTask,
+    updateTaskStatuses,
+    fetchTasks,
   };
 };

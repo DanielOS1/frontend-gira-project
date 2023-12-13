@@ -1,26 +1,34 @@
 // TaskScreen.tsx
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import styles from './TaskStyle';
-import { useTaskLogic, Task, TasksState} from './useTaskLogic';
-
+import { TasksState, useTaskLogic } from './useTaskLogic';
+import { useFocusEffect } from '@react-navigation/native';
+import { Task } from '../../../../Types/Types';
 const TaskScreen: React.FC = () => {
   const {
     tasks,
     moveTask,
-    selectTask, // Asegúrate de desestructurar selectTask aquí
+    selectTask,
     navigateToCreateTask,
+    updateTaskStatuses,
+    fetchTasks,
   } = useTaskLogic();
+  
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchTasks();
+    }, [])
+  );
 
   const renderTask = (task: Task, from: keyof TasksState) => {
     return (
       <TouchableOpacity
         key={task.id}
         style={styles.task}
-        onPress={() => selectTask(task)} // Utiliza selectTask aquí
+        onPress={() => selectTask(task)}
       >
-        <Text style={styles.taskTitle}>{task.title}</Text>
-        <Text style={styles.taskId}>{task.id}</Text>
+        <Text style={styles.taskTitle}>{task.nombre}</Text>
         {renderMoveButtons(task, from)}
       </TouchableOpacity>
     );
@@ -28,13 +36,13 @@ const TaskScreen: React.FC = () => {
 
   const renderMoveButtons = (task: Task, from: keyof TasksState) => {
     return (
-      <View>
+      <View style={styles.moveButtonsContainer}>
         {from !== 'toDo' && (
           <TouchableOpacity
             onPress={() => moveTask(task.id, from, 'toDo')}
             style={[styles.button, styles.toDoButton]}
           >
-            <Text style={styles.buttonText}>Mover a POR HACER</Text>
+            <Text style={styles.buttonText}>POR HACER</Text>
           </TouchableOpacity>
         )}
         {from !== 'inProgress' && (
@@ -42,7 +50,7 @@ const TaskScreen: React.FC = () => {
             onPress={() => moveTask(task.id, from, 'inProgress')}
             style={[styles.button, styles.inProgressButton]}
           >
-            <Text style={styles.buttonText}>Mover a EN CURSO</Text>
+            <Text style={styles.buttonText}>EN CURSO</Text>
           </TouchableOpacity>
         )}
         {from !== 'done' && (
@@ -50,34 +58,33 @@ const TaskScreen: React.FC = () => {
             onPress={() => moveTask(task.id, from, 'done')}
             style={[styles.button, styles.doneButton]}
           >
-            <Text style={styles.buttonText}>Mover a LISTO</Text>
+            <Text style={styles.buttonText}>LISTO</Text>
           </TouchableOpacity>
         )}
       </View>
     );
   };
-  console.log(tasks);
+
   return (
     <ScrollView style={styles.container}>
       <TouchableOpacity onPress={navigateToCreateTask} style={styles.createTaskButton}>
         <Text style={styles.createTaskButtonText}>Crear Tarea Nueva</Text>
       </TouchableOpacity>
-      <View style={styles.container}>
-        <Text style={styles.header}>Tablero Sprint 4</Text>
-        <View style={styles.board}>
-          <View style={styles.column}>
-            <Text style={styles.columnTitle}>POR HACER</Text>
-            {tasks.toDo.map(task => renderTask(task, 'toDo'))}
-          </View>
-          <View style={styles.column}>
-            <Text style={styles.columnTitle}>EN CURSO</Text>
-            {tasks.inProgress.map(task => renderTask(task, 'inProgress'))}
-          </View>
-          <View style={styles.column}>
-            <Text style={styles.columnTitle}>LISTO</Text>
-            {tasks.done.map(task => renderTask(task, 'done'))}
-          </View>
-        </View>
+      <TouchableOpacity onPress={updateTaskStatuses} style={styles.saveTaskButton}>
+        <Text style={styles.createTaskButtonText}>Guardar</Text>
+      </TouchableOpacity>
+      <Text style={styles.header}>Tablero Sprint 4</Text>
+      <View style={styles.column}>
+        <Text style={styles.columnTitle}>POR HACER</Text>
+        {tasks.toDo.map(task => renderTask(task, 'toDo'))}
+      </View>
+      <View style={styles.column}>
+        <Text style={styles.columnTitle}>EN CURSO</Text>
+        {tasks.inProgress.map(task => renderTask(task, 'inProgress'))}
+      </View>
+      <View style={styles.column}>
+        <Text style={styles.columnTitle}>LISTO</Text>
+        {tasks.done.map(task => renderTask(task, 'done'))}
       </View>
     </ScrollView>
   );

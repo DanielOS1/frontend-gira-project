@@ -1,105 +1,56 @@
-import React, { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { View, Text, StyleSheet, Animated, TouchableOpacity, ImageBackground  } from 'react-native';
-import { TextInput, Button } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BlurView } from 'expo-blur';
-import { API_URL} from '@env';
+// LoginScreen.tsx
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import { Input, Button } from 'react-native-elements';
+import { useLogin } from './useLogin'; // Asegúrate de tener la ruta correcta del archivo
 import styles from './loginStyles';
+import LoadingScreen from '../../../config/LoadingScreen';
+
 const LoginScreen: React.FC = () => {
-  
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const navigation = useNavigation();
-  const fadeAnim = useState(new Animated.Value(0))[0];
-
-  const handleLogin = async () => {
-    try {
-      console.log(API_URL)
-      const response = await fetch(`${API_URL}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        const token = data.token;
-        console.log(token);
-        await AsyncStorage.setItem('token', token);
-      
-        // Muestra un mensaje de inicio de sesión exitoso
-        alert('Inicio de sesión exitoso');
-        navigation.navigate('Home')
-      
-        // Puedes navegar a la pantalla de inicio o realizar otras acciones
-      } else {
-        // La solicitud al servidor devolvió un error
-        // Puedes manejar el error aquí, por ejemplo, mostrando un mensaje de error al usuario
-        alert('Credenciales inválidas');
-      }
-    } catch (error) {
-      // Maneja otros errores, como problemas de red
-      console.error('Error al iniciar sesión:', error);
-    }
-  };
-
-
-  React.useEffect(() => {
-    Animated.timing(
-      fadeAnim,
-      {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-      }
-    ).start();
-  }, [fadeAnim]);
-
-
+  const { email, setEmail, password, setPassword, handleLogin, navigation, isLoading } = useLogin();
+  if (isLoading) {
+    return <LoadingScreen />; // Asegúrate de que el componente LoadingScreen esté importado y definido
+  }
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>COLD GIRA</Text>
-  
-      <TextInput
-        label="Correo Electronico"
+      <StatusBar barStyle="light-content" />
+      <Text style={styles.header}>Cold JIRA</Text>
+
+      <Input
+        placeholder="Correo Electrónico"
+        placeholderTextColor="#A0A0A0"
+        inputContainerStyle={styles.input}
+        inputStyle={styles.inputText}
         value={email}
-        onChangeText={text => setEmail(text)}
-        style={styles.input}
+        onChangeText={setEmail}
       />
-      <TextInput
-        label="Contraseña"
+
+      <Input
+        placeholder="Contraseña"
+        placeholderTextColor="#A0A0A0"
+        inputContainerStyle={styles.input}
+        inputStyle={styles.inputText}
         secureTextEntry
         value={password}
-        onChangeText={text => setPassword(text)}
-        style={styles.input}
+        onChangeText={setPassword}
       />
-  
+
       <Button
-        mode="contained"
-        onPress={() => { handleLogin() }}
-        style={styles.button}
-        labelStyle={styles.buttonText}
-      >
-        Iniciar sesión
-      </Button>
-  
-      <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-        <Text style={styles.registerLink}>
-          ¿No tienes una cuenta? Regístrate aquí.
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('')}>
-        <Text style={styles.registerLink}>
-          Recuperar contraseña
-        </Text>
-      </TouchableOpacity>
+        title="Iniciar sesión"
+        buttonStyle={styles.button}
+        onPress={handleLogin}
+      />
+
+      <View style={styles.linkContainer}>
+        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+          <Text style={styles.linkText}>Regístrate aquí.</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity>
+          <Text style={styles.linkText}>Recuperar contraseña</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
-  
-
-
 export default LoginScreen;

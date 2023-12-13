@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { API_URL} from '@env';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import { getData, storeData} from '../../../../logic/storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface Team {

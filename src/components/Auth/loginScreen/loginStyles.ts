@@ -1,44 +1,44 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'rgba(254, 242, 242, 1)', // coral-red-50
-    },
-    header: {
-        fontSize: 28,
-        fontWeight: "bold",
-        marginBottom: 24,
-        color: 'rgba(223, 35, 35, 1)', // coral-red-600
-    },
-    input: {
-        width: "90%",
-        marginBottom: 20,
-        backgroundColor: 'rgba(254, 226, 226, 1)', // coral-red-100
-        color: 'rgba(128, 28, 28, 1)', // coral-red-900
-        borderRadius: 10,
-        padding: 10,
-    },
-    button: {
-        width: "90%",
-        marginTop: 10,
-        backgroundColor: 'rgba(242, 74, 74, 1)', // coral-red-500
-        padding: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 10,
-    },
-    buttonText: {
-        color: 'rgba(254, 242, 242, 1)', // coral-red-50
-    },
-    registerLink: {
-        marginTop: 16,
-        color: 'rgba(128, 28, 28, 1)', // coral-red-900
-        textDecorationLine: "underline",
-    },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+    backgroundColor: '#000', // Fondo negro
+  },
+  header: {
+    color: '#FFF', // Texto blanco
+    fontSize: 26,
+    fontWeight: 'bold',
+    marginBottom: 40,
+    textAlign: 'center',
+  },
+  input: {
+    borderBottomWidth: 0, // Elimina la línea inferior por defecto
+    backgroundColor: '#333', // Fondo de los inputs
+    borderRadius: 10, // Bordes redondeados
+    marginBottom: 20,
+    padding: 10,
+  },
+  inputText: {
+    color: '#FFF', // Texto de los inputs
+    marginLeft: 10, // Espaciado para el texto dentro del input
+  },
+  button: {
+    backgroundColor: '#2868c7', // Botón azul
+    borderRadius: 10, // Bordes redondeados para el botón
+    padding: 15,
+  },
+  linkContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  linkText: {
+    color: '#7cb9e8', // Enlace en azul claro
+    textDecorationLine: 'underline',
+    padding: 5,
+  },
 });
 
 export default styles;

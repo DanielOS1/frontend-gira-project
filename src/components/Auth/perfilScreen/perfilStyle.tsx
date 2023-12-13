@@ -1,32 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    justifyContent: 'flex-start', // Ajustar para que inicie desde arriba
-    alignItems: 'center', // Centrar elementos horizontalmente
-    backgroundColor: '#fff', // Color de fondo de la pantalla
-  },
-  imagePlaceholder: {
-    width: 120,
-    height: 120,
-    borderRadius: 60, // Para hacerlo circular
-    backgroundColor: '#e1e1e1',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  imagePlaceholderText: {
-    color: '#a1a1a1',
-    fontSize: 14,
-  },
-  label: {
-    alignSelf: 'flex-start',
-    fontSize: 16,
-    marginBottom: 8,
-    color: '#333',
-  },
   inputContainer: {
     flexDirection: 'row',
     //alignItems: 'center',
@@ -37,30 +11,64 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     width: '100%',
   },
-  input: {
+  container: {
     flex: 1,
-    fontSize: 16,
-    padding: 0,
-
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#000', // Fondo negro para mantener la consistencia
+    padding: 20,
   },
-  value: {
-    flex: 1,
+  imagePlaceholder: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: '#333', // Un tono de gris oscuro
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  imagePlaceholderText: {
     fontSize: 16,
-    color: '#666',
-    marginLeft: 10,
+    color: '#FFF',
+  },
+  input: {
+    width: '90%',
+    marginBottom: 10,
+    backgroundColor: '#222', // Un tono de gris aún más oscuro
+    color: '#FFF', // Texto en blanco
+    borderRadius: 10,
+    padding: 15,
+    fontSize: 16,
   },
   button: {
-    width: '100%',
-    padding: 12,
-    backgroundColor: '#007bff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 8,
-    marginTop: 10,
+    width: '90%',
+    backgroundColor: '#2868c7', // Azul que combina con el diseño general
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 20,
   },
   buttonText: {
-    color: '#fff',
+    textAlign: 'center',
+    color: '#FFF',
     fontSize: 18,
+  },
+  label: {
+    alignSelf: 'flex-start',
+    color: '#7cb9e8', // Azul claro para la etiqueta
+    marginBottom: 5,
+    marginLeft: '5%', // Asegúrate de que esto alinea con tu input
+    fontSize: 16,
+  },
+  value: {
+    color: '#FFF', // Texto en blanco para el contenido
+    fontSize: 16,
+    marginBottom: 15,
+  },
+  registerLink: {
+    color: '#7cb9e8', // Azul claro para los enlaces
+    textDecorationLine: 'underline',
+    padding: 10,
+    fontSize: 16,
   },
 });
 

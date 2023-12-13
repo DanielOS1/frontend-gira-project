@@ -9,7 +9,7 @@ export const storeData = async (key: string, value: any) => {
   } catch (e) {
     console.error(`Failed to save the data with key ${key} to the storage`, e);
   }
-};
+}; 
 
 // Función para recuperar datos
 export const getData = async (key: string) => {

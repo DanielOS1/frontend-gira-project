@@ -13,12 +13,15 @@ import TeamScreen from '../components/Project/teamScreen/teamScreen';
 import CreateTaskScreen from '../components/Project/projectScreen/projectTask/taskManager/CreateTaskScreen';
 import TaskDetailsScreen from '../components/Project/projectScreen/projectTask/taskManager/TaskDetailsScreen';
 import ProjectScreen from '../components/Project/projectScreen/projectScreen';
+import WelcomeScreen from '../components/Home/welcomeScreen';
+import { RootStackParamList } from '../Types/Types';
 const Navigator = () => {
-    const Stack = createNativeStackNavigator();
+    const Stack = createNativeStackNavigator<RootStackParamList>();
 
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Login">
+            <Stack.Navigator initialRouteName="Bienvenido">
+            <Stack.Screen name="Bienvenido" component={WelcomeScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={RegisterScreen} />
             <Stack.Screen name="Home" component={HomeScreen} />
@@ -36,5 +39,5 @@ const Navigator = () => {
         </NavigationContainer>
     );
 }
- 
+
 export default Navigator;

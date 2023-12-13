@@ -6,6 +6,7 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_URL } from '@env';
 import { storeData } from '../../../logic/storage';
+import LoadingScreen from '../../../config/LoadingScreen';
 
 type Project = {
   id: string;
@@ -67,11 +68,7 @@ const ProjectScreen: React.FC = () => {
   };
 
   if (isLoading) {
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
+    return <LoadingScreen />;
   }
 
   const renderProjectItem = ({ item }: { item: Project }) => (
@@ -107,13 +104,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: '#f3f3f3',
+    backgroundColor: '#000',
   },
   teamContainer: {
-    marginBottom: 20,
-    padding: 10,
-    backgroundColor: '#fff',
-    borderRadius: 6,
+    marginBottom: 15,
+    padding: 15,
+    backgroundColor: '#1c1c1e',
+    borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -121,19 +118,20 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   teamName: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#fff', // Texto blanco
+    marginBottom: 10,
   },
   projectItem: {
-    backgroundColor: '#e9ecef',
-    padding: 8,
-    marginVertical: 4,
-    borderRadius: 4,
+    backgroundColor: '#333', // Fondo oscuro para los ítems de proyecto
+    padding: 10,
+    borderRadius: 6,
+    marginBottom: 8,
   },
   projectName: {
     fontSize: 16,
-    color: '#333',
+    color: '#fff', // Texto blanco
   },
 });
 

@@ -1,14 +1,15 @@
 // Perfil.tsx
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, TextInput, Button, TouchableOpacity, FlatList, StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Entypo } from '@expo/vector-icons';
 import { API_URL} from '@env';
 import styles from './perfilStyle'; // Asegúrate de que la ruta al archivo de estilos sea correcta
+import LoadingScreen from '../../../config/LoadingScreen';
 
 const ProfileImagePlaceholder = () => (
   <View style={styles.imagePlaceholder}>
-    <Text style={styles.imagePlaceholderText}>Imagen de perfil</Text>
+    <Entypo name="user" size={60} color="#7cb9e8" />
   </View>
 );
 
@@ -85,11 +86,7 @@ const Perfil = () => {
 }, []);
 
   if (loading) {
-    return (
-      <View style={styles.container}>
-        <Text>Cargando datos...</Text>
-      </View>
-    );
+    return <LoadingScreen />;
   }
 
   const handleEditToggle = (field: "username" | "email") => {
@@ -106,8 +103,8 @@ const Perfil = () => {
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="light-content" />
       <ProfileImagePlaceholder />
-
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Nombre de usuario:</Text>
         {isEditing.username ? (

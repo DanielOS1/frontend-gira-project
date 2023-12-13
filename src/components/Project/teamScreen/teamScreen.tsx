@@ -6,35 +6,24 @@ import styles from './teamStyle';
 import { Entypo } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_URL} from '@env';
-type Team = {
-  id: string;
-  nombre: string;
-  descripcion: string;
-  members: Member[]; // Asumiendo que tienes un tipo Member definido en alguna parte
-};
-
-type Member = {
-  id: string;
-  username: string;
-  email: string;
-};
+import {Team} from '../../../Types/Types';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList  } from '../../../Types/Types';
+import { storeData } from '../../../logic/storage';
+import LoadingScreen from '../../../config/LoadingScreen';
 
 const TeamScreen: React.FC = () => {
   const [teams, setTeams] = useState<Team[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const navigation = useNavigation();
-
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'TeamScreen'>>();
   useEffect(() => {
     const fetchTeams = async () => {
       setIsLoading(true);
       try {
-        // Obtener el token del almacenamiento local
         const token = await AsyncStorage.getItem('token');
         console.log(token);
-        // Verificar si el token existe
         if (!token) {
           console.error('No se encontró el token de autenticación');
-          // Aquí puedes manejar la ausencia del token, como redirigir al inicio de sesión
           return;
         }
 
@@ -58,39 +47,29 @@ const TeamScreen: React.FC = () => {
   }, []);
 
   const handleDescriptionPress = (team: Team) => {
-    navigation.navigate('TeamDescription', { team });
+    storeData('team', team);
+    navigation.navigate('TeamDescription');
   };
 
   // Renderiza un mensaje de carga mientras los datos se están obteniendo
   if (isLoading) {
-    return (
-      <View style={styles.container}>
-        <Text>Cargando equipos...</Text>
-      </View>
-    );
+    return <LoadingScreen />;
   }
 
   return (
     <View style={styles.container}>
       <FlatList
         data={teams}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <View style={styles.teamItem}>
+          <TouchableOpacity style={styles.teamItem} onPress={() => handleDescriptionPress(item)}>
             <Text style={styles.teamName}>{item.nombre}</Text>
-            <View style={styles.iconsContainer}>
-              <TouchableOpacity onPress={() => handleDescriptionPress(item)}>
-                <Entypo name="documents" size={24} color="black" style={styles.icon} />
-              </TouchableOpacity>
-            </View>
-          </View>
+            <Entypo name="chevron-right" size={24} color="#7cb9e8" />
+          </TouchableOpacity>
         )}
       />
-      <TouchableOpacity
-        style={styles.addButton}
-        onPress={() => navigation.navigate('addTeam')}
-      >
-        <Text style={styles.addButtonText}>+</Text>
+      <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('addTeam')}>
+        <Entypo name="plus" size={24} color="#fff" />
       </TouchableOpacity>
     </View>
   );

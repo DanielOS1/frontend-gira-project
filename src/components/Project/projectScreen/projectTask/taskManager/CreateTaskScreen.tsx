@@ -19,21 +19,28 @@ const CreateTaskScreen = () => {
   
   const handleCreateTask = async () => {
     try {
-      const token = await getToken(); // Obtiene el token de autenticación
+      const token = await getToken();
       const projectId = await getData('selectedProjectId');
+      const creador = await getData('nombreUsuario'); // Suponiendo que guardas el nombre del usuario así
       console.log('projectId', projectId);
+
       if (!projectId) {
         Alert.alert('Error', 'No se ha seleccionado un proyecto.');
         return;
       }
 
+      // Formatea las fechas a objetos Date, o asegúrate de que estén en el formato correcto como string.
+      const fechaInicioFormatted = startDate ? new Date(startDate) : undefined;
+      const fechaTerminoFormatted = endDate ? new Date(endDate) : undefined;
+
       const newTask = {
         nombre: taskName,
         descripcion: taskDescription,
-        proyectoId: projectId, // Usamos el ID del proyecto obtenido del almacenamiento
-        responsableId: taskResponsible ? 'id_del_responsable' : null, // Opcional, maneja según tu lógica
-        fechaInicio: startDate,
-        fechaTermino: endDate,
+        proyectoId: projectId, // Asegúrate de que esto es un número
+        creador: creador, // Asumiendo que puedes obtener el nombre del creador
+        responsable: taskResponsible || undefined, // Si no hay responsable, envía undefined
+        fechaInicio: fechaInicioFormatted,
+        fechaTermino: fechaTerminoFormatted,
         estado: 'toDo', // Estado inicial de la tarea
       };
 
@@ -52,7 +59,6 @@ const CreateTaskScreen = () => {
       Alert.alert('Error', 'No se pudo crear la tarea');
     }
   };
-
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Nombre de la Tarea:</Text>

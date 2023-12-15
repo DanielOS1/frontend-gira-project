@@ -1,57 +1,61 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import axios from 'axios';
-import styles from './teamStyle';
-import { Entypo } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { API_URL} from '@env';
-import {Team} from '../../../Types/Types';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList  } from '../../../Types/Types';
+import { API_URL } from '@env';
+import { Team, RootStackParamList } from '../../../Types/Types';
 import { storeData } from '../../../logic/storage';
 import LoadingScreen from '../../../config/LoadingScreen';
+import styles from './teamStyle';
+import { Entypo } from '@expo/vector-icons';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 const TeamScreen: React.FC = () => {
   const [teams, setTeams] = useState<Team[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'TeamScreen'>>();
-  useEffect(() => {
-    const fetchTeams = async () => {
-      setIsLoading(true);
-      try {
-        const token = await AsyncStorage.getItem('token');
-        console.log(token);
-        if (!token) {
-          console.error('No se encontró el token de autenticación');
-          return;
-        }
 
-        const response = await axios.get(`http://${API_URL}/equipos/user-equipos`, {
-          headers: {
-            Authorization: `Bearer ${token}` // Incluir el token en los encabezados
-          }
-        });
-
-        console.log(response.data.equipos);
-        setTeams(response.data.equipos); // Asegúrate de ajustar según la estructura de tu respuesta
-      } catch (error) {
-        console.error('Error al cargar los equipos', error);
-        // Manejar el error
+  // Función para obtener los equipos
+  const fetchTeams = async () => {
+    setIsLoading(true);
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (!token) {
+        console.error('No se encontró el token de autenticación');
+        return;
       }
-      setIsLoading(false);
-      
-    };
 
+      const response = await axios.get(`http://${API_URL}/equipos/user-equipos`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Incluir el token en los encabezados
+        },
+      });
+
+      setTeams(response.data.equipos); // Asegúrate de ajustar según la estructura de tu respuesta
+    } catch (error) {
+      console.error('Error al cargar los equipos', error);
+      // Manejar el error
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
     fetchTeams();
   }, []);
+
+  // Actualizar la lista de equipos cada vez que la pantalla obtiene foco
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchTeams();
+    }, [])
+  );
 
   const handleDescriptionPress = (team: Team) => {
     storeData('team', team);
     navigation.navigate('TeamDescription');
   };
 
-  // Renderiza un mensaje de carga mientras los datos se están obteniendo
   if (isLoading) {
     return <LoadingScreen />;
   }

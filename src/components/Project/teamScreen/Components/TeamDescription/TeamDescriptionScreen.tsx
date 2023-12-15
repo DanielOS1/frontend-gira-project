@@ -1,73 +1,87 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, FlatList } from "react-native";
-import styles from "./TeamDescriptionStyle";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
 import axios from 'axios';
 import { API_URL } from '@env';
-import { getData, getToken, storeData } from '../../../../../logic/storage'; // Asegúrate de que la ruta sea correcta
+import { getData, getToken, storeData } from '../../../../../logic/storage';
 import { RootStackParamList, Team, User } from '../../../../../Types/Types';
-import { StackNavigationProp } from '@react-navigation/stack';
+import Dialog from "react-native-dialog";
 
-
+import styles from "./TeamDescriptionStyle";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 const TeamDescriptionScreen: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'TeamDescription'>>();
+  const [dialogVisible, setDialogVisible] = useState(false);
+
   const route = useRoute();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'TeamDescription'>>();
   const [team, setTeam] = useState<Team>();
 
-  
-  useEffect(() => {
-    const fetchTeamDetails = async () => {
-      setIsLoading(true);
-      try {
-        const storedTeam = await getData('team');
-        if (storedTeam) {
-          setTeam(storedTeam);
-          const token = await getToken();
-          if (token) {
-            const usersResponse = await axios.get(`http://${API_URL}/equipos/${storedTeam.id}/users`, {
-              headers: {
-                Authorization: `Bearer ${token}`
-              }
-            });
-            setUsers(usersResponse.data);
-          } else {
-            console.error('No se encontró el token de autenticación');
-          }
+  const fetchTeamDetails = async () => {
+    setIsLoading(true);
+    try {
+      const storedTeam = await getData('team');
+      if (storedTeam) {
+        setTeam(storedTeam);
+        const token = await getToken();
+        if (token) {
+          const usersResponse = await axios.get(`http://${API_URL}/equipos/${storedTeam.id}/users`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+          setUsers(usersResponse.data);
         } else {
-          console.error('No se encontraron los detalles del equipo');
-          navigation.goBack();
+          console.error('No se encontró el token de autenticación');
         }
-      } catch (error) {
-        console.error('Error al obtener los detalles del equipo', error);
-      } finally {
-        setIsLoading(false);
+      } else {
+        console.error('No se encontraron los detalles del equipo');
+        navigation.goBack();
       }
-    };
+    } catch (error) {
+      console.error('Error al obtener los detalles del equipo', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchTeamDetails();
   }, [navigation]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchTeamDetails();
+    }, [])
+  );
+
   const handleAddUsers = () => {
     storeData('nombreTeam', team?.nombre);
     navigation.navigate('AddUserScreen');
   };
+
   const handleCreateProject = () => {
     storeData('team', team?.id);
     navigation.navigate('projectCreation');
   };
-  const deleteProject = async () => {
+
+  const deleteProject = () => {
+    setDialogVisible(true);
+  };
+
+  const handleDelete = async () => {
+    setDialogVisible(false);
     console.log('Eliminando proyecto...');
     try {
       await axios.delete(`http://${API_URL}/equipos/${team?.nombre}`);
       console.log('Equipo eliminado exitosamente');
-      navigation.navigate('Home'); // Navega de regreso a la pantalla de inicio
+      navigation.navigate('Home');
     } catch (error) {
       console.error('Error al eliminar el equipo', error);
     }
   };
-
-  
 
   return (
     <View style={styles.container}>
@@ -80,7 +94,7 @@ const TeamDescriptionScreen: React.FC = () => {
         <Text style={styles.addButtonText}>Eliminar</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.newProjectButton} onPress={handleCreateProject}>
-      <Text style={styles.addButtonText}>Nuevo Proyecto</Text>
+        <Text style={styles.addButtonText}>Nuevo Proyecto</Text>
       </TouchableOpacity>
       <FlatList
         data={users}
@@ -91,7 +105,16 @@ const TeamDescriptionScreen: React.FC = () => {
           </View>
         )}
       />
+    <Dialog.Container visible={dialogVisible}>
+    <Dialog.Title>Confirmación</Dialog.Title>
+    <Dialog.Description>
+      ¿Estás seguro de que quieres eliminar este equipo?
+    </Dialog.Description>
+    <Dialog.Button label="Cancelar" onPress={() => setDialogVisible(false)} />
+    <Dialog.Button label="Eliminar" onPress={handleDelete} />
+  </Dialog.Container>
     </View>
   );
 };
+
 export default TeamDescriptionScreen;

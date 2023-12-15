@@ -5,6 +5,8 @@ import axios from 'axios';
 import { API_URL } from '@env';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import Dialog from "react-native-dialog";
+
 import { RootStackParamList } from '../../../../Types/Types';
 import {styles} from './ProjectDetailsStyles';
 // Definición de la interfaz Project
@@ -27,6 +29,7 @@ const ProjectDetailsScreen: React.FC = () => {
   const [teams, setTeams] = useState<Team[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editableNombre, setEditableNombre] = useState('');
+  
   const [creatorName, setCreatorName] = useState('Cargando...');
   const [editableDescripcion, setEditableDescripcion] = useState('');
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'DetailsProjectScreen'>>();

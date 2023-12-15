@@ -41,8 +41,8 @@ export type User = {
     nombre: string;
     descripcion: string;
     proyecto: Project;
-    creador: User;
-    responsable: User | null;
+    creador: string;
+    responsable: string | null;
     fechaInicio: string | null; // Date en backend se convierte en string para el frontend
     fechaTermino: string | null; // Date en backend se convierte en string para el frontend
     estado: string;

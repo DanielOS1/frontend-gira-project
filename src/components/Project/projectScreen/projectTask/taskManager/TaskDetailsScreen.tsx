@@ -24,7 +24,7 @@ const TaskDetailsScreen = () => {
       if (loadedTask) {
         setTask(loadedTask);
         setEditableTask(loadedTask);
-        loadComments();
+        await loadComments(parseInt(loadedTask.id, 10));
       }
     };
 
@@ -55,23 +55,26 @@ const TaskDetailsScreen = () => {
     if (!newComment.trim()) return;
   
     const token = await getToken();
-    const comentarioData = {
-      contenido: newComment,
+    // Envuelve el comentario en el objeto createComentarioDto
+    const requestBody = {
+      createComentarioDto: {
+        contenido: newComment
+      }
     };
   
     try {
-      const response = await fetch(`http://${API_URL}/tareas/${task?.id}/comentarios`, {
+      const response = await fetch(`http://${API_URL}/comentarios/${task?.id}/comentarios`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ createComentarioDto: comentarioData }),
+        body: JSON.stringify(requestBody) // Envía requestBody
       });
   
       if (response.ok) {
-        const addedComment: Comentario = await response.json();
-        setComments(prev => [...prev, addedComment]);
+        const addedComment = await response.json();
+        setComments(prevComments => [...prevComments, addedComment]);
         setNewComment('');
       } else {
         console.error('Error al agregar comentario:', await response.text());
@@ -80,13 +83,14 @@ const TaskDetailsScreen = () => {
       console.error('Error al conectar con la API:', error);
     }
   };
+  
 
-  const loadComments = async () => {
-    if (!task || !task.id) return;
+  const loadComments = async (taskId: number) => {
+    if (!taskId) return;
   
     try {
       const token = await getToken();
-      const response = await fetch(`http://${API_URL}/tareas/${task.id}/comentarios`, {
+      const response = await fetch(`http://${API_URL}/comentarios/${taskId}/comentarios`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -134,49 +138,24 @@ const TaskDetailsScreen = () => {
     <View style={styles.container}>
       {/* Nombre de la Tarea */}
       <Text style={styles.label}>Nombre de la Tarea:</Text>
-      {isEditing['nombre'] ? (
-        <TextInput
-          style={styles.input}
-          value={editableTask?.nombre}
-          onChangeText={(value) => handleInputChange(value, 'nombre')}
-          onBlur={() => handleEditToggle('nombre')} // Save on blur
-          autoFocus
-        />
-      ) : (
-        <Text style={styles.text}>{task?.nombre}</Text>
-      )}
-      <TouchableOpacity onPress={() => handleEditToggle('nombre')}>
-        <Entypo name="edit" size={24} color="black" />
-      </TouchableOpacity>
-
+      {/* Suponemos que aquí manejas el estado de edición */}
+      <Text style={styles.text}>{task?.nombre}</Text>
+      
       {/* Descripción */}
       <Text style={styles.label}>Descripción:</Text>
-      {isEditing['descripcion'] ? (
-        <TextInput
-          style={styles.input}
-          value={editableTask?.descripcion}
-          onChangeText={(value) => handleInputChange(value, 'descripcion')}
-          onBlur={() => handleEditToggle('descripcion')} // Save on blur
-          autoFocus
-        />
-      ) : (
-        <Text style={styles.text}>{task?.descripcion}</Text>
-      )}
-      <TouchableOpacity onPress={() => handleEditToggle('descripcion')}>
-        <Entypo name="edit" size={24} color="black" />
-      </TouchableOpacity>
+      <Text style={styles.text}>{task?.descripcion}</Text>
 
-      {/* Repeat similar structure for other task fields like fechaCreacion, fechaTermino, etc. */}
-
+      {/* Contenedor de Entrada de Comentario */}
       <View style={styles.commentInputContainer}>
         <TextInput
           style={styles.commentInput}
           placeholder="Escribe un comentario..."
+          placeholderTextColor="#666"
           value={newComment}
           onChangeText={setNewComment}
         />
         <TouchableOpacity onPress={handleAddComment} style={styles.addButton}>
-          <Text>Agregar</Text>
+          <Text style={styles.addButtonText}>Agregar</Text>
         </TouchableOpacity>
       </View>
 
@@ -186,10 +165,12 @@ const TaskDetailsScreen = () => {
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <View style={styles.comment}>
-            <Text>{item.contenido}</Text>
+            <Text style={styles.text}>{item.contenido}</Text>
           </View>
         )}
       />
+
+      {/* Botón Eliminar Tarea */}
       <TouchableOpacity style={styles.deleteButton} onPress={handleDeleteTask}>
         <Text style={styles.deleteButtonText}>Eliminar Tarea</Text>
       </TouchableOpacity>
@@ -200,29 +181,19 @@ const TaskDetailsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#000', // Fondo negro
     padding: 20,
-    backgroundColor: '#fff',
-  },
-  taskContainer: {
-    marginBottom: 20,
   },
   label: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#000',
+    color: '#FFF', // Texto blanco
+    marginBottom: 5,
   },
   text: {
     fontSize: 16,
-    color: '#333',
+    color: '#FFF', // Texto blanco
     marginBottom: 10,
-  },
-  input: {
-    fontSize: 16,
-    color: '#333',
-    marginBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    padding: 5,
   },
   commentInputContainer: {
     flexDirection: 'row',
@@ -235,27 +206,34 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     padding: 10,
     marginRight: 10,
+    color: '#FFF', // Texto blanco
+    backgroundColor: '#1a1a1a', // Fondo ligeramente gris
   },
   addButton: {
     padding: 10,
-    backgroundColor: '#ddd',
+    backgroundColor: '#007bff', // Botón azul
+    borderRadius: 5,
+  },
+  addButtonText: {
+    color: '#FFF', // Texto blanco
   },
   comment: {
     marginTop: 10,
     padding: 10,
-    backgroundColor: '#eee',
+    backgroundColor: '#1a1a1a', // Fondo de comentario ligeramente gris
+    borderRadius: 5,
   },
   deleteButton: {
     marginTop: 20,
     padding: 10,
-    backgroundColor: 'red',
+    backgroundColor: '#dc3545', // Botón rojo para eliminar
     borderRadius: 5,
+    alignItems: 'center',
   },
   deleteButtonText: {
-    color: 'white',
-    textAlign: 'center',
-    fontWeight: 'bold',
+    color: '#FFF', // Texto blanco
   },
 });
+
 
 export default TaskDetailsScreen;

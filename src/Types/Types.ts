@@ -15,6 +15,7 @@ export type RootStackParamList = {
     DetailsProjectScreen: undefined;
     Bienvenido: undefined;
     TaskScreen: undefined;
+    
 };
 
 export type User = {
@@ -29,7 +30,11 @@ export type User = {
     descripcion: string;
     users: User[];
   };
-  
+  export type Comentario = {
+    id: number;
+    contenido: string;
+    // Agrega cualquier otro campo que los comentarios puedan tener
+  };
 
   export interface Task {
     id: string;

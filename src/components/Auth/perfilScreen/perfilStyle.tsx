@@ -3,8 +3,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
-    //alignItems: 'center',
-    justifyContent: 'space-between',
+    alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
     paddingBottom: 8,
@@ -13,8 +12,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'stretch', // Cambiado para que los hijos ocupen todo el ancho disponible
     backgroundColor: '#000', // Fondo negro para mantener la consistencia
     padding: 20,
   },
@@ -32,13 +30,16 @@ const styles = StyleSheet.create({
     color: '#FFF',
   },
   input: {
-    width: '90%',
-    marginBottom: 10,
-    backgroundColor: '#222', // Un tono de gris aún más oscuro
-    color: '#FFF', // Texto en blanco
-    borderRadius: 10,
-    padding: 15,
+    flexGrow: 1,
+    backgroundColor: '#000',
+    color: '#FFF',
+    padding: 10,
     fontSize: 16,
+    // Establecer un borde para que se vea el límite del TextInput
+    borderColor: 'grey',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginRight: 10, // Espacio entre el input y el botón
   },
   button: {
     width: '90%',
@@ -53,22 +54,24 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   label: {
-    alignSelf: 'flex-start',
-    color: '#7cb9e8', // Azul claro para la etiqueta
-    marginBottom: 5,
-    marginLeft: '5%', // Asegúrate de que esto alinea con tu input
+    color: '#7cb9e8',
     fontSize: 16,
   },
   value: {
-    color: '#FFF', // Texto en blanco para el contenido
+    flex: 1,
+    color: '#FFF',
     fontSize: 16,
-    marginBottom: 15,
   },
+
   registerLink: {
     color: '#7cb9e8', // Azul claro para los enlaces
     textDecorationLine: 'underline',
     padding: 10,
     fontSize: 16,
+  },
+  editButton: {
+    padding: 10, // Agregado para mejorar la tocabilidad
+    marginRight: '5%', // Alineación a la derecha con margen
   },
 });
 

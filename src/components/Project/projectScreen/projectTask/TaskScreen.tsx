@@ -22,10 +22,6 @@ const TaskScreen: React.FC = () => {
   } = useTaskLogic();
   
 
-  console.log('Tareas POR HACER:', tasks.toDo.map(task => task.nombre));
-  console.log('Tareas EN CURSO:', tasks.inProgress.map(task => task.nombre));
-  console.log('Tareas LISTO:', tasks.done.map(task => task.nombre));
-
   useFocusEffect(
     React.useCallback(() => {
       fetchTasks();

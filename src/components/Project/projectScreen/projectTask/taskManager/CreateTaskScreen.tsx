@@ -5,6 +5,7 @@ import { useTaskLogic } from '../useTaskLogic';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { getData, getToken } from '../../../../../logic/storage';
+import { API_URL } from '@env';
 
 const CreateTaskScreen = () => {
   const { addNewTask } = useTaskLogic();
@@ -36,7 +37,7 @@ const CreateTaskScreen = () => {
         estado: 'toDo', // Estado inicial de la tarea
       };
 
-      const response = await axios.post('http://192.168.0.7:3000/tareas/create', newTask, {
+      const response = await axios.post(`http://${API_URL}/tareas/create`, newTask, {
         headers: { Authorization: `Bearer ${token}` },
       });
       

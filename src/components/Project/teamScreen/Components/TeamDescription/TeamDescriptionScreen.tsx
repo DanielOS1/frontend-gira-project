@@ -16,6 +16,8 @@ const TeamDescriptionScreen: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'TeamDescription'>>();
   const route = useRoute();
   const [team, setTeam] = useState<Team>();
+
+  
   useEffect(() => {
     const fetchTeamDetails = async () => {
       setIsLoading(true);

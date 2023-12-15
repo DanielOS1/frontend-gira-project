@@ -6,6 +6,7 @@ import axios from 'axios';
 import { RootStackParamList, Task } from '../../../../Types/Types';
 import { Alert } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { API_URL } from '@env';
 
 export interface TasksState {
   toDo: Task[];
@@ -25,7 +26,7 @@ export const useTaskLogic = () => {
     try {
         const storedTeam = await getData('selectedProjectId');
         const projectId = storedTeam;
-        const response = await axios.get(`http://192.168.0.7:3000/proyecto/${projectId}/tareas`);
+        const response = await axios.get(`http://${API_URL}/proyecto/${projectId}/tareas`);
         const fetchedTasks: Task[] = response.data;
         // Aquí debes separar las tareas en sus respectivas categorías según su estado
         const toDoTasks = fetchedTasks.filter(task => task.estado === 'toDo');
@@ -56,7 +57,7 @@ export const useTaskLogic = () => {
     console.log('updatedTasksStatuses', updatedTasksStatuses);
     try {
       const response = await axios.put(
-        'http://192.168.0.7:3000/tareas/updateStatuses',
+        `http://${API_URL}/tareas/updateStatuses`,
         { updatedTasks: updatedTasksStatuses },
         { headers: { Authorization: `Bearer ${token}` } }
       );

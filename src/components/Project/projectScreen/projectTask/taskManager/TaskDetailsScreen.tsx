@@ -1,8 +1,8 @@
 // TaskDetailsScreen.tsx
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import { getData } from '../../../../../logic/storage'; // Asegúrate de que la ruta sea correcta
-import { Task } from '../useTaskLogic'; // Importa la interfaz Task desde su ubicación
+import { getData } from '../../../../../logic/storage';
+import { Task } from '../../../../../Types/Types';
 
 const TaskDetailsScreen = () => {
   const [task, setTask] = useState<Task | null>(null);
@@ -10,7 +10,7 @@ const TaskDetailsScreen = () => {
   useEffect(() => {
     const loadSelectedTask = async () => {
       try {
-        const loadedTask: Task | null = await getData('selectedTask');
+        const loadedTask: Task  = await getData('selectedTask');
         if (loadedTask) {
           setTask(loadedTask);
         }
@@ -22,15 +22,12 @@ const TaskDetailsScreen = () => {
     loadSelectedTask();
   }, []);
 
-  // Manejadores para las acciones de editar y eliminar
   const handleEditTask = () => {
     console.log('Editar tarea');
-    // Aquí implementarías la navegación y lógica para la edición
   };
 
   const handleDeleteTask = () => {
     console.log('Eliminar tarea');
-    // Aquí implementarías la lógica para la eliminación
   };
 
   if (!task) {
@@ -44,30 +41,28 @@ const TaskDetailsScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Nombre de la Tarea:</Text>
-      <Text style={styles.text}>{task.title}</Text>
+      <Text style={styles.text}>{task.nombre}</Text>
 
       <Text style={styles.label}>Descripción:</Text>
-      <Text style={styles.text}>{task.description}</Text>
+      <Text style={styles.text}>{task.descripcion}</Text>
 
       <Text style={styles.label}>Fecha de Creación:</Text>
-      <Text style={styles.text}>{task.creationDate}</Text>
+      <Text style={styles.text}>{task.fechaCreacion}</Text>
 
       <Text style={styles.label}>Fecha de Término:</Text>
-      <Text style={styles.text}>{task.endDate}</Text>
+      <Text style={styles.text}>{task.fechaTermino}</Text>
 
       <Text style={styles.label}>Creador:</Text>
-      <Text style={styles.text}>{task.creator}</Text>
+      <Text style={styles.text}>{task.creador?.username}</Text>
 
       <Text style={styles.label}>Responsable:</Text>
-      <Text style={styles.text}>{task.responsible}</Text>
+      <Text style={styles.text}>{task.responsable?.username}</Text>
 
       <Button title="Editar Tarea" onPress={handleEditTask} />
       <Button title="Eliminar Tarea" onPress={handleDeleteTask} />
     </View>
   );
 };
-
-// Estilos para la pantalla
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -85,7 +80,6 @@ const styles = StyleSheet.create({
     color: '#333',
     marginBottom: 10,
   },
-  // Añade estilos adicionales si es necesario
 });
 
 export default TaskDetailsScreen;

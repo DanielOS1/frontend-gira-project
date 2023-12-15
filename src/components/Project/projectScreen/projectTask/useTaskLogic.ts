@@ -1,28 +1,25 @@
-// useTaskLogic.ts
 import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getData, getToken, storeData } from '../../../../logic/storage';
 import axios from 'axios';
-import { Task } from '../../../../Types/Types';
+import { RootStackParamList, Task } from '../../../../Types/Types';
 import { Alert } from 'react-native';
-
-
+import { StackNavigationProp } from '@react-navigation/stack';
 
 export interface TasksState {
   toDo: Task[];
   inProgress: Task[];
   done: Task[];
 }
-
-
 export const useTaskLogic = () => {
   const [tasks, setTasks] = useState<TasksState>({
     toDo: [],
     inProgress: [],
     done: [],
   });
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'TaskScreen'>>();
+
 
   const fetchTasks = async () => {
     try {
@@ -30,32 +27,27 @@ export const useTaskLogic = () => {
         const projectId = storedTeam;
         const response = await axios.get(`http://192.168.0.7:3000/proyecto/${projectId}/tareas`);
         const fetchedTasks: Task[] = response.data;
-        
         // Aquí debes separar las tareas en sus respectivas categorías según su estado
         const toDoTasks = fetchedTasks.filter(task => task.estado === 'toDo');
         const inProgressTasks = fetchedTasks.filter(task => task.estado === 'inProgress');
         const doneTasks = fetchedTasks.filter(task => task.estado === 'done');
-
         setTasks({
             toDo: toDoTasks,
             inProgress: inProgressTasks,
             done: doneTasks,
         });
+        console.log('Nombres de tareas:', fetchedTasks.map(task => task.nombre));
     } catch (error) {
         console.error('Error al obtener las tareas', error);
     }
 };
-
 
   useEffect(() => {
     fetchTasks();
   }, []);
 
   const updateTaskStatuses = async () => {
-    // Obtener el token de autenticación
     const token = await getToken();
-
-    // Preparar los datos de las tareas actualizadas para enviar al backend
     const updatedTasksStatuses = [
       ...tasks.toDo.map(task => ({ id: task.id, estado: 'toDo' })),
       ...tasks.inProgress.map(task => ({ id: task.id, estado: 'inProgress' })),
@@ -63,7 +55,6 @@ export const useTaskLogic = () => {
     ];
     console.log('updatedTasksStatuses', updatedTasksStatuses);
     try {
-      // Enviar todos los estados actualizados al backend
       const response = await axios.put(
         'http://192.168.0.7:3000/tareas/updateStatuses',
         { updatedTasks: updatedTasksStatuses },
@@ -107,7 +98,7 @@ export const useTaskLogic = () => {
 
   const selectTask = async (task: Task) => {
     try {
-      // Usar storeData para guardar la tarea seleccionada
+      console.log('task', task);
       await storeData('selectedTask', task);
       // Navegar a la pantalla de detalles
       navigation.navigate('TaskDetailsScreen');
@@ -117,13 +108,13 @@ export const useTaskLogic = () => {
   };
   
   const navigateToTaskDetails = (task: Task) => {
-    navigation.navigate('TaskDetailsScreen', { task });
+    navigation.navigate('TaskDetailsScreen');
   };
 
   const navigateToCreateTask = () => {
     navigation.navigate('CreateTaskScreen');
   };
-
+  const [searchText, setSearchText] = useState('');
   return {
     tasks,
     moveTask,
@@ -133,5 +124,7 @@ export const useTaskLogic = () => {
     addNewTask,
     updateTaskStatuses,
     fetchTasks,
+    searchText, 
+    setSearchText,
   };
 };

@@ -1,6 +1,5 @@
 // storage.ts
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 // Función para almacenar datos
 export const storeData = async (key: string, value: any) => {
   try {
@@ -10,7 +9,6 @@ export const storeData = async (key: string, value: any) => {
     console.error(`Failed to save the data with key ${key} to the storage`, e);
   }
 }; 
-
 // Función para recuperar datos
 export const getData = async (key: string) => {
   try {
@@ -20,8 +18,6 @@ export const getData = async (key: string) => {
     console.error(`Failed to fetch the data with key ${key} from the storage`, e);
   }
 };
-
-
 export const getToken = async () => {
   try {
     return await AsyncStorage.getItem('token');

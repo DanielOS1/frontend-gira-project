@@ -7,11 +7,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_URL } from '@env';
 import { storeData } from '../../../logic/storage';
 import LoadingScreen from '../../../config/LoadingScreen';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../Types/Types';
 
 type Project = {
   id: string;
   nombre: string;
-  // Añade aquí más propiedades si son necesarias
 };
 
 type Team = {
@@ -24,7 +25,8 @@ type Team = {
 const ProjectScreen: React.FC = () => {
   const [teams, setTeams] = useState<Team[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList,'ProjectScreen'>>();
+
 
   const fetchTeamsAndProjects = useCallback(async () => {
     setIsLoading(true);
@@ -64,7 +66,7 @@ const ProjectScreen: React.FC = () => {
   const handleProjectPress = async (project: Project) => {
     console.log('Proyecto seleccionado:', project);
     await storeData('selectedProjectId', project.id)
-    navigation.navigate('ProjectHome', { project });
+    navigation.navigate('ProjectHome');
   };
 
   if (isLoading) {

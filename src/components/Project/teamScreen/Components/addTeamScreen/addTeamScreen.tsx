@@ -5,11 +5,15 @@ import { useNavigation } from "@react-navigation/native";
 import axios from "axios"; // Asegúrate de tener axios instalado
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_URL} from '@env';
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../../../../../Types/Types";
+
 const CreateTeamScreen: React.FC = () => {
   const [teamName, setTeamName] = useState("");
   const [description, setDescription] = useState("");
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'addTeam'>>();
+
 
   const getToken = async () => {
     try {
@@ -91,14 +95,6 @@ const CreateTeamScreen: React.FC = () => {
       <TouchableOpacity style={styles.button} onPress={handleCreateTeam}>
         <Text style={styles.buttonText}>Crear Equipo</Text>
       </TouchableOpacity>
-
-      {/* Botón para agregar usuarios (opcional) */}
-      {/* <TouchableOpacity
-        style={styles.addButton}
-        onPress={handleAddUsers}
-      >
-        <Text style={styles.addButtonText}>Agregar Usuarios</Text>
-      </TouchableOpacity> */}
     </View>
   );
 };

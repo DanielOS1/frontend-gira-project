@@ -4,13 +4,16 @@ import { getData, getToken } from '../../../../logic/storage'; // Asegúrate de 
 import axios from 'axios';
 import { API_URL } from '@env';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../../Types/Types';
+import {styles} from './ProjectDetailsStyles';
 // Definición de la interfaz Project
 interface Project {
   id: number;
   nombre: string;
   descripcion: string;
-  fecha_creacion: string;
-  creador_id: number;
+  fechaCreacion: string;
+  creadorId: number;
 }
 interface Team {
   id: string;
@@ -24,9 +27,23 @@ const ProjectDetailsScreen: React.FC = () => {
   const [teams, setTeams] = useState<Team[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editableNombre, setEditableNombre] = useState('');
+  const [creatorName, setCreatorName] = useState('Cargando...');
   const [editableDescripcion, setEditableDescripcion] = useState('');
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'DetailsProjectScreen'>>();
 
+  const fetchCreatorName = async (creatorId: number) => {
+    const token = await getToken(); // Asegúrate de tener un manejo de errores adecuado para la obtención del token
+    try {
+
+      const response = await axios.get(`http://${API_URL}/users/${creatorId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setCreatorName(response.data.username); // Asume que la respuesta tiene un campo 'nombre'
+    } catch (error) {
+      console.error('Error al obtener el nombre del creador:', error);
+      setCreatorName('Nombre no disponible'); // Maneja el error como consideres apropiado
+    }
+  };
 
   const fetchProjectTeams = async (projectId: number, token: string) => {
     try {
@@ -38,10 +55,22 @@ const ProjectDetailsScreen: React.FC = () => {
       console.error('Error al obtener los equipos del proyecto:', error);
     }
   };
-  const formatDate = (dateString : any) => {
+  const formatDate = (dateString: string) => {
+    if (!dateString) return 'Fecha no disponible';
+  
     const date = new Date(dateString);
-    return date.toLocaleDateString('es-CL'); // Cambia el locale según tu preferencia
+    if (isNaN(date.getTime())) {
+      // La fecha no es válida
+      return 'Fecha inválida';
+    }
+  
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric', month: 'long', day: 'numeric'
+    };
+  
+    return date.toLocaleDateString('es-CL', options);
   };
+
   const fetchProjectDetails = useCallback(async () => {
     setIsLoading(true); // Iniciar el indicador de carga
     const projectId = await getData('selectedProjectId');
@@ -59,7 +88,7 @@ const ProjectDetailsScreen: React.FC = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setProject(projectResponse.data);
-
+      console.log("asdasd", projectResponse.data.fechaCreacion);
       // Después de obtener los detalles del proyecto, obten los equipos
       const teamsResponse = await axios.get(`http://${API_URL}/proyecto/${projectId}/equipos`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -75,7 +104,9 @@ const ProjectDetailsScreen: React.FC = () => {
   useEffect(() => {
     fetchProjectDetails();
   }, [fetchProjectDetails]);
-
+  if (project) {
+    fetchCreatorName(project.creadorId);
+  }
   if (isLoading) {
     return <ActivityIndicator size="large" />;
   }
@@ -172,12 +203,12 @@ const ProjectDetailsScreen: React.FC = () => {
         </View>
         <View style={styles.detailContainer}>
           <Text style={styles.label}>Fecha de Creación:</Text>
-          <Text style={styles.value}>{formatDate(project.fecha_creacion)}</Text>
+          <Text style={styles.value}>{formatDate(project.fechaCreacion)}</Text>
         </View>
         <View style={styles.detailContainer}>
-          <Text style={styles.label}>Creador ID:</Text>
-          <Text style={styles.value}>{project.creador_id}</Text>
-        </View>
+        <Text style={styles.label}>Creador:</Text>
+        <Text style={styles.value}>{creatorName}</Text>
+      </View>
         <View style={styles.detailContainer}>
           <Text style={styles.label}>Equipos Participantes:</Text>
           {teams.length > 0 ? (
@@ -211,68 +242,5 @@ const ProjectDetailsScreen: React.FC = () => {
     )}
   </ScrollView>
 );
-          }
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f2f2f2',
-  },
-  buttonContainer: {
-    margin: 20,
-  },
-  input: {
-    margin: 10,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-  },
-  descriptionInput: {
-    minHeight: 100,
-    textAlignVertical: 'top',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 10,
-  },
-  teamContainer: {
-    backgroundColor: '#e7e7e7', // Un fondo ligeramente diferente para los equipos
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 5,
-  },
-  centered: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  header: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    padding: 20,
-    textAlign: 'center',
-    backgroundColor: '#ffffff',
-  },
-  detailContainer: {
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    backgroundColor: '#fff',
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  value: {
-    fontSize: 16,
-    color: '#333',
-  },
-  // Añade más estilos según sea necesario
-});
-
+}
 export default ProjectDetailsScreen;

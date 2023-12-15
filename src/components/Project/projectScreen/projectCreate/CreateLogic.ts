@@ -3,6 +3,8 @@ import { API_URL} from '@env';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../../Types/Types';
 
 export interface Team {
     id: string;
@@ -20,7 +22,8 @@ export const useCreateLogic = () => {
     const [teams, setTeams] = useState<Team[]>([]);
     const [selectedTeams, setSelectedTeams] = useState<Array<string>>([]);
     const [descripcion, setDescripcion] = useState('');
-    const navigation = useNavigation();
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'projectCreation'>>();
+
 
     const [project, setProject] = useState<Project>({ id: '', name: '', descripcion: '' });
     const [nameProject, setNameProject] = useState('');

@@ -12,6 +12,16 @@ const HomeScreen: React.FC = () => {
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
+                headerStyle: {
+                    backgroundColor: '#f4511e', // Cambia el color de fondo del header
+                  },
+                  headerTintColor: '#fff', // Cambia el color del texto del header
+                  headerTitleStyle: {
+                    fontWeight: 'bold', // Establece la fuente del texto en negrita
+                    fontSize: 18, // Cambia el tamaño de la fuente del texto del header
+                    // Puedes agregar más estilos como 'alignSelf', 'textAlign', etc.
+                  },
+                  headerTitleAlign: 'center',
                 tabBarIcon: ({ color, size }) => {
                     let iconName: IconName = 'user'; // Valor por defecto
 

@@ -33,7 +33,7 @@ const CreateTaskScreen = () => {
         responsableId: taskResponsible ? 'id_del_responsable' : null, // Opcional, maneja según tu lógica
         fechaInicio: startDate,
         fechaTermino: endDate,
-        estado: 'pendiente', // Estado inicial de la tarea
+        estado: 'toDo', // Estado inicial de la tarea
       };
 
       const response = await axios.post('http://192.168.0.7:3000/tareas/create', newTask, {

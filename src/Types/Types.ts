@@ -11,13 +11,10 @@ export type RootStackParamList = {
     TaskDetailsScreen: undefined;
     TeamScreen: undefined;
     ProjectScreen: undefined;
-    ProjectHome: {
-      params: {
-        projectId: string;
-        projectName: string;
-      };
-    }
+    ProjectHome: undefined;
+    DetailsProjectScreen: undefined;
     Bienvenido: undefined;
+    TaskScreen: undefined;
 };
 
 export type User = {

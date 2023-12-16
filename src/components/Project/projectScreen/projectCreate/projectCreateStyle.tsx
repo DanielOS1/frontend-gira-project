@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
       },
       teamItemSelected: {
-        backgroundColor: '#dddddd', // o cualquier color que indique la selección
+        backgroundColor: '#dddddd',
       },
 });
 

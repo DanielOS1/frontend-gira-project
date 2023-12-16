@@ -34,17 +34,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000', // Fondo negro
+    backgroundColor: '#000',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#fff', // Título en color blanco para contraste
+    color: '#fff',
     marginBottom: 20,
   },
   logo: {
-    width: 650, // Ajusta el ancho como sea necesario
-    height: 350, // Ajusta el alto para mantener la relación de aspecto
+    width: 650,
+    height: 350,
     marginBottom: 30,
   },
   button: {

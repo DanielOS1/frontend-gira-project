@@ -31,7 +31,7 @@ const TaskScreen: React.FC = () => {
 
   const filterTasks = (tasks: Task[], searchTerm: string) => {
     if (!searchTerm) {
-      return tasks; // Si no hay término de búsqueda, retorna todas las tareas
+      return tasks;
     }
     return tasks.filter(task => 
       task.nombre.toLowerCase().includes(searchTerm.toLowerCase())

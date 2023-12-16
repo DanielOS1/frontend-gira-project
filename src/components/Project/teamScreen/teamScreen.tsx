@@ -16,7 +16,7 @@ const TeamScreen: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'TeamScreen'>>();
 
-  // Función para obtener los equipos
+ 
   const fetchTeams = async () => {
     setIsLoading(true);
     try {
@@ -28,14 +28,14 @@ const TeamScreen: React.FC = () => {
 
       const response = await axios.get(`http://${API_URL}/equipos/user-equipos`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Incluir el token en los encabezados
+          Authorization: `Bearer ${token}`,
         },
       });
 
-      setTeams(response.data.equipos); // Asegúrate de ajustar según la estructura de tu respuesta
+      setTeams(response.data.equipos);
     } catch (error) {
       console.error('Error al cargar los equipos', error);
-      // Manejar el error
+     
     }
     setIsLoading(false);
   };
@@ -44,7 +44,7 @@ const TeamScreen: React.FC = () => {
     fetchTeams();
   }, []);
 
-  // Actualizar la lista de equipos cada vez que la pantalla obtiene foco
+ 
   useFocusEffect(
     React.useCallback(() => {
       fetchTeams();

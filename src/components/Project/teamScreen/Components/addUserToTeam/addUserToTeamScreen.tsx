@@ -5,7 +5,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from "@react-navigation/native";
 import { API_URL } from '@env';
-import { getData } from '../../../../../logic/storage'; // Asegúrate de que la ruta sea correcta
+import { getData } from '../../../../../logic/storage';
 
 const AddUserScreen: React.FC<{}> = () => {
   const [userName, setUserName] = useState('');
@@ -21,7 +21,7 @@ const AddUserScreen: React.FC<{}> = () => {
       const storedTeam = await getData('team');
       console.log(userName);
       console.log(storedTeam.nombre);
-      // Actualizar la URL para incluir el nombre del equipo y el nombre de usuario
+     
       const response = await axios.post(`http://${API_URL}/equipos/${storedTeam.nombre}/users/${userName}`, {}, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -30,7 +30,7 @@ const AddUserScreen: React.FC<{}> = () => {
       
       Alert.alert('Éxito', 'Usuario agregado exitosamente al equipo');
       console.log(response.data);
-      navigation.goBack(); // Regresar a la pantalla anterior
+      navigation.goBack();
     } catch (error) {
       console.error('Error al agregar al usuario al equipo', error);
       Alert.alert('Error', 'No se pudo agregar al usuario al equipo');
@@ -56,13 +56,13 @@ const AddUserScreen: React.FC<{}> = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5', // color de fondo suave
+    backgroundColor: '#f5f5f5',
     padding: 20,
   },
   title: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#333', // color de texto oscuro
+    color: '#333',
     marginBottom: 20,
     textAlign: 'center',
   },
@@ -71,20 +71,20 @@ const styles = StyleSheet.create({
     width: '100%',
     marginVertical: 8,
     borderWidth: 1,
-    borderColor: '#ddd', // borde más suave
-    backgroundColor: '#fff', // fondo blanco para el input
-    borderRadius: 8, // bordes redondeados
+    borderColor: '#ddd',
+    backgroundColor: '#fff',
+    borderRadius: 8,
     padding: 10,
     fontSize: 16,
   },
   button: {
-    backgroundColor: '#0066cc', // color de botón azul
+    backgroundColor: '#0066cc',
     padding: 15,
-    borderRadius: 8, // bordes redondeados
+    borderRadius: 8,
     marginTop: 20,
     width: '100%',
-    shadowOpacity: 0.2, // sombra ligera para el botón
-    elevation: 2, // elevación para Android
+    shadowOpacity: 0.2,
+    elevation: 2,
   },
   buttonText: {
     color: '#fff',

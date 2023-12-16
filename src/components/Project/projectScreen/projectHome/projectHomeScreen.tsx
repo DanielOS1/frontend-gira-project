@@ -21,13 +21,13 @@ const HomeProjectScreen: React.FC = () => {
           },
           headerTitleAlign: 'center',
           tabBarIcon: ({ focused, color, size }) => {
-            let iconName: React.ComponentProps<typeof AntDesign>['name'] = 'question'; // Un nombre de icono por defecto
+            let iconName: React.ComponentProps<typeof AntDesign>['name'] = 'question';
             if (route.name === 'Settings') {
               iconName = 'setting';
             } else if (route.name === 'Task') {
               iconName = 'book';
             }
-            // Es importante que el nombre del icono coincida exactamente con los nombres definidos en el tipo de AntDesign
+           
             return <AntDesign name={iconName} size={size} color={color} />;
           },
           tabBarActiveTintColor: 'tomato',

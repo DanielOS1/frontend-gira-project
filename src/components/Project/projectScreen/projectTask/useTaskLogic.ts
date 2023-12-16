@@ -28,7 +28,7 @@ export const useTaskLogic = () => {
         const projectId = storedTeam;
         const response = await axios.get(`http://${API_URL}/proyecto/${projectId}/tareas`);
         const fetchedTasks: Task[] = response.data;
-        // Aquí debes separar las tareas en sus respectivas categorías según su estado
+       
         const toDoTasks = fetchedTasks.filter(task => task.estado === 'toDo');
         const inProgressTasks = fetchedTasks.filter(task => task.estado === 'inProgress');
         const doneTasks = fetchedTasks.filter(task => task.estado === 'done');
@@ -62,10 +62,10 @@ export const useTaskLogic = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // Verificar la respuesta del backend y mostrar un mensaje apropiado
+     
       if (response.status === 200) {
         Alert.alert('Éxito', 'Los estados de las tareas se han actualizado.');
-        fetchTasks(); // Recargar las tareas actualizadas del servidor
+        fetchTasks();
       } else {
         Alert.alert('Error', 'No se pudieron actualizar los estados de las tareas.');
       }
@@ -78,7 +78,7 @@ export const useTaskLogic = () => {
   const moveTask = (taskId: string, from: keyof TasksState, to: keyof TasksState) => {
     setTasks(prev => {
       const taskIndex = prev[from].findIndex(task => task.id === taskId);
-      if (taskIndex === -1) return prev; // Si no se encuentra la tarea, no hacer nada
+      if (taskIndex === -1) return prev;
       const task = prev[from][taskIndex];
       const newFromTasks = prev[from].filter((_, index) => index !== taskIndex);
       const newToTasks = [...prev[to], task];
@@ -93,7 +93,7 @@ export const useTaskLogic = () => {
   const addNewTask = (newTaskData : Task) => {
     setTasks(prev => ({
       ...prev,
-      toDo: [...prev.toDo, newTaskData], // Añade la nueva tarea al final del array 'toDo'
+      toDo: [...prev.toDo, newTaskData],
     }));
   };
 
@@ -101,7 +101,7 @@ export const useTaskLogic = () => {
     try {
       console.log('task', task);
       await storeData('selectedTask', task);
-      // Navegar a la pantalla de detalles
+     
       navigation.navigate('TaskDetailsScreen');
     } catch (error) {
       console.error('Error al seleccionar la tarea', error);

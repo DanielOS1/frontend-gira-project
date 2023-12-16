@@ -55,7 +55,7 @@ const TaskDetailsScreen = () => {
     if (!newComment.trim()) return;
   
     const token = await getToken();
-    // Envuelve el comentario en el objeto createComentarioDto
+   
     const requestBody = {
       createComentarioDto: {
         contenido: newComment
@@ -69,7 +69,7 @@ const TaskDetailsScreen = () => {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(requestBody) // Envía requestBody
+        body: JSON.stringify(requestBody)
       });
   
       if (response.ok) {
@@ -181,18 +181,18 @@ const TaskDetailsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000', // Fondo negro
+    backgroundColor: '#000',
     padding: 20,
   },
   label: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#FFF', // Texto blanco
+    color: '#FFF',
     marginBottom: 5,
   },
   text: {
     fontSize: 16,
-    color: '#FFF', // Texto blanco
+    color: '#FFF',
     marginBottom: 10,
   },
   commentInputContainer: {
@@ -206,32 +206,32 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     padding: 10,
     marginRight: 10,
-    color: '#FFF', // Texto blanco
-    backgroundColor: '#1a1a1a', // Fondo ligeramente gris
+    color: '#FFF',
+    backgroundColor: '#1a1a1a',
   },
   addButton: {
     padding: 10,
-    backgroundColor: '#007bff', // Botón azul
+    backgroundColor: '#007bff',
     borderRadius: 5,
   },
   addButtonText: {
-    color: '#FFF', // Texto blanco
+    color: '#FFF',
   },
   comment: {
     marginTop: 10,
     padding: 10,
-    backgroundColor: '#1a1a1a', // Fondo de comentario ligeramente gris
+    backgroundColor: '#1a1a1a',
     borderRadius: 5,
   },
   deleteButton: {
     marginTop: 20,
     padding: 10,
-    backgroundColor: '#dc3545', // Botón rojo para eliminar
+    backgroundColor: '#dc3545',
     borderRadius: 5,
     alignItems: 'center',
   },
   deleteButtonText: {
-    color: '#FFF', // Texto blanco
+    color: '#FFF',
   },
 });
 

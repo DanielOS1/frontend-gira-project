@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TextInput, Button, Alert } from 'react-native';
-import { getData, getToken } from '../../../../logic/storage'; // Asegúrate de que la ruta sea correcta
+import { getData, getToken } from '../../../../logic/storage';
 import axios from 'axios';
 import { API_URL } from '@env';
 import { useNavigation } from '@react-navigation/native';
@@ -35,16 +35,16 @@ const ProjectDetailsScreen: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'DetailsProjectScreen'>>();
 
   const fetchCreatorName = async (creatorId: number) => {
-    const token = await getToken(); // Asegúrate de tener un manejo de errores adecuado para la obtención del token
+    const token = await getToken();
     try {
 
       const response = await axios.get(`http://${API_URL}/users/${creatorId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setCreatorName(response.data.username); // Asume que la respuesta tiene un campo 'nombre'
+      setCreatorName(response.data.username);
     } catch (error) {
       console.error('Error al obtener el nombre del creador:', error);
-      setCreatorName('Nombre no disponible'); // Maneja el error como consideres apropiado
+      setCreatorName('Nombre no disponible');
     }
   };
 
@@ -63,7 +63,7 @@ const ProjectDetailsScreen: React.FC = () => {
   
     const date = new Date(dateString);
     if (isNaN(date.getTime())) {
-      // La fecha no es válida
+     
       return 'Fecha inválida';
     }
   
@@ -75,7 +75,7 @@ const ProjectDetailsScreen: React.FC = () => {
   };
 
   const fetchProjectDetails = useCallback(async () => {
-    setIsLoading(true); // Iniciar el indicador de carga
+    setIsLoading(true);
     const projectId = await getData('selectedProjectId');
     const token = await getToken();
 
@@ -86,13 +86,13 @@ const ProjectDetailsScreen: React.FC = () => {
     }
 
     try {
-      // Obtener detalles del proyecto
+     
       const projectResponse = await axios.get(`http://${API_URL}/proyecto/${projectId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setProject(projectResponse.data);
       console.log("asdasd", projectResponse.data.fechaCreacion);
-      // Después de obtener los detalles del proyecto, obten los equipos
+     
       const teamsResponse = await axios.get(`http://${API_URL}/proyecto/${projectId}/equipos`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -100,7 +100,7 @@ const ProjectDetailsScreen: React.FC = () => {
     } catch (error) {
       console.error('Error al obtener los detalles del proyecto:', error);
     } finally {
-      setIsLoading(false); // Detener el indicador de carga
+      setIsLoading(false);
     }
   }, []);
 
@@ -140,7 +140,7 @@ const ProjectDetailsScreen: React.FC = () => {
       });
 
       setIsEditing(false);
-      setProject(response.data.proyecto); // Asegúrate de actualizar el estado con la respuesta actualizada
+      setProject(response.data.proyecto);
     } catch (error) {
       console.error('Error al actualizar el proyecto:', error);
     }
@@ -151,7 +151,7 @@ const ProjectDetailsScreen: React.FC = () => {
 
   const handleCancelEdit = () => {
     setIsEditing(false);
-    // Restablecer los valores editables al estado original del proyecto
+   
     setEditableNombre(project?.nombre ?? '');
     setEditableDescripcion(project?.descripcion ?? '');
   };
@@ -169,8 +169,8 @@ const ProjectDetailsScreen: React.FC = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigation.navigate("Home");
-      // Manejar lo que sucede después de una eliminación exitosa, como volver a la pantalla anterior
-      // Por ejemplo, si estás usando react-navigation podrías hacer:
+     
+     
     } catch (error) {
       console.error('Error al eliminar el proyecto:', error);
     }

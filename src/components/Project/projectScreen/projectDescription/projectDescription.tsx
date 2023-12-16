@@ -47,12 +47,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f4f4f4', // Un fondo claro
+    backgroundColor: '#f4f4f4',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#333', // Color oscuro para el título
+    color: '#333',
     marginBottom: 15,
   },
   section: {
@@ -61,16 +61,16 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#444', // Un color más oscuro para los títulos de sección
+    color: '#444',
     marginBottom: 10,
   },
   descriptionText: {
     fontSize: 16,
-    color: '#666', // Texto más suave para el cuerpo
-    lineHeight: 22, // Altura de línea para mejorar la legibilidad
-    // Puedes añadir más estilos aquí según necesites
+    color: '#666',
+    lineHeight: 22,
+   
   },
-  // Puedes añadir más estilos aquí según necesites
+ 
 });
 
 export default DescriptionScreen;

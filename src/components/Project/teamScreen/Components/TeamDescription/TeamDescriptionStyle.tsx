@@ -4,33 +4,33 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f4f4f4', // Un fondo claro
+    backgroundColor: '#f4f4f4',
   },
   teamName: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#333', // Texto oscuro para el nombre del equipo
+    color: '#333',
     marginBottom: 10,
   },
   newProjectButton: {
-    backgroundColor: '#28a745', // Un tono de verde
+    backgroundColor: '#28a745',
     padding: 10,
     borderRadius: 5,
     marginBottom: 20,
   },
   teamDescription: {
     fontSize: 16,
-    color: '#666', // Texto más suave para la descripción
+    color: '#666',
     marginBottom: 20,
   },
   addButton: {
-    backgroundColor: '#007bff', // Un color azul estándar para el botón
+    backgroundColor: '#007bff',
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
   },
   deleteButton: {
-    backgroundColor: '#dc3545', // Rojo para el botón de eliminar
+    backgroundColor: '#dc3545',
     padding: 10,
     borderRadius: 5,
     marginBottom: 20,

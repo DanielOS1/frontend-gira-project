@@ -5,29 +5,29 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
-    backgroundColor: '#000', // Fondo negro
+    backgroundColor: '#000',
   },
   header: {
-    color: '#FFF', // Texto blanco
+    color: '#FFF',
     fontSize: 26,
     fontWeight: 'bold',
     marginBottom: 40,
     textAlign: 'center',
   },
   input: {
-    borderBottomWidth: 0, // Elimina la línea inferior por defecto
-    backgroundColor: '#333', // Fondo de los inputs
-    borderRadius: 10, // Bordes redondeados
+    borderBottomWidth: 0, 
+    backgroundColor: '#333',
+    borderRadius: 10,
     marginBottom: 20,
     padding: 10,
   },
   inputText: {
-    color: '#FFF', // Texto de los inputs
-    marginLeft: 10, // Espaciado para el texto dentro del input
+    color: '#FFF',
+    marginLeft: 10,
   },
   button: {
-    backgroundColor: '#2868c7', // Botón azul
-    borderRadius: 10, // Bordes redondeados para el botón
+    backgroundColor: '#2868c7',
+    borderRadius: 10,
     padding: 15,
   },
   linkContainer: {
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   linkText: {
-    color: '#7cb9e8', // Enlace en azul claro
+    color: '#7cb9e8',
     textDecorationLine: 'underline',
     padding: 5,
   },

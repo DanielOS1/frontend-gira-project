@@ -4,7 +4,7 @@ import { View, Text, TextInput, Button, TouchableOpacity, FlatList, StatusBar } 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Entypo } from '@expo/vector-icons';
 import { API_URL} from '@env';
-import styles from './perfilStyle'; // Asegúrate de que la ruta al archivo de estilos sea correcta
+import styles from './perfilStyle';
 import LoadingScreen from '../../../config/LoadingScreen';
 import { FontAwesome } from '@expo/vector-icons';
 

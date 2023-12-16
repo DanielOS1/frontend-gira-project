@@ -20,10 +20,10 @@ const ProjectCreationScreen: React.FC = () => {
   const toggleTeamSelection = (teamId: string) => {
     setSelectedTeams((currentSelectedTeams) => {
       if (currentSelectedTeams.includes(teamId)) {
-        // Retorna un nuevo array sin el teamId
+       
         return currentSelectedTeams.filter(id => id !== teamId);
       } else {
-        // Retorna un nuevo array con el teamId añadido
+       
         return [...currentSelectedTeams, teamId];
       }
     });
@@ -31,7 +31,7 @@ const ProjectCreationScreen: React.FC = () => {
   const asd = () =>{
     console.log(teams)
   }
-  // Función para renderizar cada equipo
+ 
   const renderTeam = ({ item }: { item: Team }) => (
     <TouchableOpacity
       onPress={() => toggleTeamSelection(item.id)}

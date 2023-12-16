@@ -12,7 +12,7 @@ export interface Team {
 }
 
 interface Project {
-    // Definir la estructura de un proyecto aquí
+   
     id: string;
     name: string;
     descripcion: string;
@@ -30,8 +30,8 @@ export const useCreateLogic = () => {
 
 
     const loadUserTeams = async () => {
-        // Cargar los equipos del usuario desde el backend y actualizar el estado `teams`
-        // Asegúrate de actualizar la URL y manejar la autenticación si es necesario
+       
+       
         console.log('Cargando equipos del usuario...');
         try {
             const token = await AsyncStorage.getItem('token');
@@ -39,7 +39,7 @@ export const useCreateLogic = () => {
                 const response = await axios.get(`http://${API_URL}/equipos/user-equipos`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-                setTeams(response.data.equipos); // Suponiendo que la respuesta es un array de equipos
+                setTeams(response.data.equipos);
                 console.log('Equipos cargados', response.data);
                 console.log(teams)
             } else {
@@ -57,10 +57,10 @@ export const useCreateLogic = () => {
                 throw new Error('Authentication token not found');
             }
 
-            // En el cuerpo de la solicitud, cambia `teamName` a un campo que contenga los IDs de los equipos seleccionados.
+           
             const createProjectResponse = await axios.post(`http://${API_URL}/proyecto/create`, {
-                equipoIds: selectedTeams, // Cambiado para enviar un array de IDs de equipo
-                nombre: nameProject, // Asegúrate de que `team` tenga un campo `name`
+                equipoIds: selectedTeams,
+                nombre: nameProject,
                 descripcion: descripcion,
             }, {
                 headers: {
@@ -68,7 +68,7 @@ export const useCreateLogic = () => {
                 }
             });
 
-            // Si la respuesta es exitosa, puedes navegar al listado de proyectos o manejar la respuesta como necesites
+           
             navigation.navigate('Home');
         } catch (error) {
             console.error('Error al crear el proyecto', error);

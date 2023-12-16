@@ -12,15 +12,15 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    alignItems: 'stretch', // Cambiado para que los hijos ocupen todo el ancho disponible
-    backgroundColor: '#000', // Fondo negro para mantener la consistencia
+    alignItems: 'stretch',
+    backgroundColor: '#000',
     padding: 20,
   },
   imagePlaceholder: {
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: '#333', // Un tono de gris oscuro
+    backgroundColor: '#333',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 30,
@@ -35,15 +35,15 @@ const styles = StyleSheet.create({
     color: '#FFF',
     padding: 10,
     fontSize: 16,
-    // Establecer un borde para que se vea el límite del TextInput
+   
     borderColor: 'grey',
     borderWidth: 1,
     borderRadius: 5,
-    marginRight: 10, // Espacio entre el input y el botón
+    marginRight: 10,
   },
   button: {
     width: '90%',
-    backgroundColor: '#2868c7', // Azul que combina con el diseño general
+    backgroundColor: '#2868c7',
     padding: 15,
     borderRadius: 10,
     marginTop: 20,
@@ -64,14 +64,14 @@ const styles = StyleSheet.create({
   },
 
   registerLink: {
-    color: '#7cb9e8', // Azul claro para los enlaces
+    color: '#7cb9e8',
     textDecorationLine: 'underline',
     padding: 10,
     fontSize: 16,
   },
   editButton: {
-    padding: 10, // Agregado para mejorar la tocabilidad
-    marginRight: '5%', // Alineación a la derecha con margen
+    padding: 10,
+    marginRight: '5%',
   },
 });
 

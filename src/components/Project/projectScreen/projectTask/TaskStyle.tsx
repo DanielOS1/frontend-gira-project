@@ -14,15 +14,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     backgroundColor: '#333',
   },
-  // Los botones originales ahora están obsoletos, puedes eliminarlos si ya no se usan
+ 
   createTaskButton: {
-    // ... estilos obsoletos
+   
   },
   saveTaskButton: {
-    // ... estilos obsoletos
+   
   },
   createTaskButtonText: {
-    // ... estilos obsoletos
+   
   },
   board: {
     flexDirection: 'row',
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
   },
-  // Estilos para los botones flotantes
+ 
   floatingButtonContainer: {
     position: 'absolute',
     bottom: 16,
@@ -102,33 +102,33 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   floatingButton: {
-    backgroundColor: '#1CAFDE', // Color para el botón de crear
-    width: 56, // Tamaño estándar para FAB
+    backgroundColor: '#1CAFDE',
+    width: 56,
     height: 56,
-    borderRadius: 28, // Circular
+    borderRadius: 28,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 6,
-    marginHorizontal: 8, // Espacio entre botones
+    marginHorizontal: 8,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 2,
     shadowColor: '#000000',
     shadowOpacity: 0.3,
   },
   saveFloatingButton: {
-    backgroundColor: 'green', // Color para el botón de guardar
-    // Los demás estilos son iguales al floatingButton
+    backgroundColor: 'green',
+   
   },
   floatingButtonIcon: {
     fontSize: 24,
     color: 'white',
-    lineHeight: 56, // Asegura que el texto esté centrado verticalmente
+    lineHeight: 56,
   },
-  // Este estilo será aplicado al ScrollView para dar margen abajo
+ 
   scrollViewContent: {
-    paddingBottom: 80, // Ajusta este valor si es necesario
+    paddingBottom: 80,
   },
-  // ... más estilos que necesites
+ 
 });
 
 export default styles;

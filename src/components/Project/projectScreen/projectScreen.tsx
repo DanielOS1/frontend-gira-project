@@ -122,18 +122,18 @@ const styles = StyleSheet.create({
   teamName: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#fff', // Texto blanco
+    color: '#fff',
     marginBottom: 10,
   },
   projectItem: {
-    backgroundColor: '#333', // Fondo oscuro para los ítems de proyecto
+    backgroundColor: '#333',
     padding: 10,
     borderRadius: 6,
     marginBottom: 8,
   },
   projectName: {
     fontSize: 16,
-    color: '#fff', // Texto blanco
+    color: '#fff',
   },
 });
 

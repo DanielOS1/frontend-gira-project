@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   circleShape: {
     width: 120,
     height: 120,
-    borderRadius: 60, // La mitad del ancho y alto para hacerlo circular
+    borderRadius: 60,
     backgroundColor: "#000",
     marginVertical: 20,
   },
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   descriptionInput: {
-    height: 100, // Mayor altura para la descripción
+    height: 100,
     textAlignVertical: "top",
   },
   userSection: {

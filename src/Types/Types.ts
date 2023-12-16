@@ -33,7 +33,7 @@ export type User = {
   export type Comentario = {
     id: number;
     contenido: string;
-    // Agrega cualquier otro campo que los comentarios puedan tener
+   
   };
 
   export interface Task {
@@ -43,11 +43,11 @@ export type User = {
     proyecto: Project;
     creador: string;
     responsable: string | null;
-    fechaInicio: string | null; // Date en backend se convierte en string para el frontend
-    fechaTermino: string | null; // Date en backend se convierte en string para el frontend
+    fechaInicio: string | null;
+    fechaTermino: string | null;
     estado: string;
-    fechaCreacion: string; // Date en backend se convierte en string para el frontend
-    fechaActualizacion: string; // Date en backend se convierte en string para el frontend
+    fechaCreacion: string;
+    fechaActualizacion: string;
   }
 
   export type Project = {

@@ -21,7 +21,7 @@ const CreateTaskScreen = () => {
     try {
       const token = await getToken();
       const projectId = await getData('selectedProjectId');
-      const creador = await getData('nombreUsuario'); // Suponiendo que guardas el nombre del usuario así
+      const creador = await getData('nombreUsuario');
       console.log('projectId', projectId);
 
       if (!projectId) {
@@ -29,19 +29,19 @@ const CreateTaskScreen = () => {
         return;
       }
 
-      // Formatea las fechas a objetos Date, o asegúrate de que estén en el formato correcto como string.
+     
       const fechaInicioFormatted = startDate ? new Date(startDate) : undefined;
       const fechaTerminoFormatted = endDate ? new Date(endDate) : undefined;
 
       const newTask = {
         nombre: taskName,
         descripcion: taskDescription,
-        proyectoId: projectId, // Asegúrate de que esto es un número
-        creador: creador, // Asumiendo que puedes obtener el nombre del creador
-        responsable: taskResponsible || undefined, // Si no hay responsable, envía undefined
+        proyectoId: projectId,
+        creador: creador,
+        responsable: taskResponsible || undefined,
         fechaInicio: fechaInicioFormatted,
         fechaTermino: fechaTerminoFormatted,
-        estado: 'toDo', // Estado inicial de la tarea
+        estado: 'toDo',
       };
 
       const response = await axios.post(`http://${API_URL}/tareas/create`, newTask, {

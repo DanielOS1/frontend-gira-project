@@ -2,7 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../components/Auth/loginScreen/LoginScreen';
 import RegisterScreen from '../components/Auth/registerScreen/RegisterScreen';
-import HomeScreen from '../components/Home/homeScreen'; // Importa la pantalla HomeScree
+import HomeScreen from '../components/Home/homeScreen';
 import Perfil from '../components/Auth/perfilScreen/PerfilScreen';
 import CreateTeamScreen from '../components/Project/teamScreen/Components/addTeamScreen/addTeamScreen';
 import AddUserScreen from '../components/Project/teamScreen/Components/addUserToTeam/addUserToTeamScreen';

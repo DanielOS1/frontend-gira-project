@@ -8,11 +8,22 @@ import { RootStackParamList } from '../../../Types/Types';
 export const useLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false); // Para controlar la pantalla de carga
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Login'>>();
 
   const handleLogin = async () => {
-    setIsLoading(true); // Activamos la pantalla de carga
+    if (!email || !password) {
+      alert('Por favor, completa todos los campos');
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      alert('Ingresa un correo electrónico válido');
+      return;
+    }
+
+    setIsLoading(true);
     try {
       const response = await fetch(`http://${API_URL}/auth/login`, {
         method: 'POST',
@@ -25,17 +36,15 @@ export const useLogin = () => {
       if (response.ok) {
         const data = await response.json();
         await AsyncStorage.setItem('token', data.token);
-        // Si quieres mostrar algún mensaje de éxito, lo podrías hacer aquí
-        navigation.navigate('Home'); // Suponiendo que 'Home' es la pantalla a la que quieres navegar
+        navigation.navigate('Home');
       } else {
-        // Aquí podrías manejar la respuesta de error
         alert('Credenciales inválidas');
       }
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
       alert('Error al iniciar sesión');
     } finally {
-      setIsLoading(false); // Desactivamos la pantalla de carga
+      setIsLoading(false);
     }
   };
 
@@ -45,7 +54,7 @@ export const useLogin = () => {
     password,
     setPassword,
     handleLogin,
-    isLoading, // Añadimos isLoading al objeto de retorno para poder usarlo en el componente
+    isLoading, 
     navigation,
   };
 };

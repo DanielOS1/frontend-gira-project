@@ -112,6 +112,23 @@ const Perfil = () => {
   };
 
   const handleSave = async (field: "username" | "email" | "realName" | "rol") => {
+    if (field === "username" && !username.trim()) {
+      alert("El nombre de usuario no puede estar vacío");
+      return;
+    }
+    if (field === "email" && !email.trim()) {
+      alert("El correo electrónico no puede estar vacío");
+      return;
+    }
+    if (field === "realName" && !realName.trim()) {
+      alert("El nombre real no puede estar vacío");
+      return;
+    }
+    if (field === "rol" && !rol.trim()) {
+      alert("El rol no puede estar vacío");
+      return;
+    }
+    
     const wasUpdateSuccessful = await updateProfile(field);
     if (wasUpdateSuccessful) {
       setIsEditing({ ...isEditing, [field]: false });

@@ -25,6 +25,12 @@ const CreateTeamScreen: React.FC = () => {
 
   const handleCreateTeam = async () => {
     try {
+      if (!teamName.trim() || !description.trim()) {
+        Alert.alert("Campos vacíos", "Por favor, completa todos los campos");
+        return;
+      }
+
+
       const token = await getToken();
       if (!token) {
         Alert.alert("Error", "No se encontró el token de autenticación");

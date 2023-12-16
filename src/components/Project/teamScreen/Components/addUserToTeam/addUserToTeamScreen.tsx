@@ -13,6 +13,12 @@ const AddUserScreen: React.FC<{}> = () => {
 
   const handleAddUser = async () => {
     try {
+
+      if (!userName.trim()) {
+        Alert.alert('Campo vacío', 'Por favor, ingresa el nombre de usuario del colaborador');
+        return;
+      }
+
       const token = await AsyncStorage.getItem('token');
       if (!token) {
         console.error('No se encontró el token de autenticación');
